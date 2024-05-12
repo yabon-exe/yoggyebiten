@@ -22,7 +22,7 @@ func (g *SimpleGame) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "Hello, World!o0o0o0o0o0o0o0o0o0")
 }
 
-func (g *SimpleGame) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+func (g *SimpleGame) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return outsideWidth / 2, outsideHeight / 2
 }
 

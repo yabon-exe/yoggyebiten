@@ -8,6 +8,6 @@ type Game interface {
 	Init() error
 	Update() error
 	Draw(screen *ebiten.Image)
-	Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int)
+	Layout(outsideWidth, outsideHeight int) (int, int)
 	GetWindowOption() (windowTitle string, windowWidth, windowHeight int)
 }
