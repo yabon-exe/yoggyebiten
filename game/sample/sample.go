@@ -19,6 +19,12 @@ type SampleGame struct {
 	count int
 }
 
+func NewSampleGame() game.Game {
+	return &SampleGame{
+		count: 0,
+	}
+}
+
 func (g *SampleGame) Init() error {
 	img, _, err := image.Decode(bytes.NewReader(images.Runner_png))
 	if err != nil {
@@ -39,34 +45,12 @@ func (g *SampleGame) Draw(screen *ebiten.Image) {
 	screen.DrawImage(runnerImage.SubImage(image.Rect(0, 0, 128, 128)).(*ebiten.Image), op)
 }
 
-func (g *SampleGame) Layout(outsideWidth, outsideHeight int) (int, int) {
-	// 非常に縦長のデバイスの場合（スマートフォンなど）、9:16のアスペクト比を使用
-	if float64(outsideHeight) > float64(outsideWidth)*1.8 {
-		aspectRatio := 9.0 / 16.0
-		return int(float64(outsideHeight) * aspectRatio), outsideHeight
+func (g *SampleGame) GetGameOption() game.GameOption {
+	option := game.GameOption{
+		DeviceType:   game.PC,
+		WindowTitle:  "*** Sample0001 Game ***",
+		WindowWidth:  880,
+		WindowHeight: 495,
 	}
-	// 縦長のデバイス（タブレット等）の場合は3:4のアスペクト比を使用
-	if float64(outsideHeight) > float64(outsideWidth)*1.3 {
-		aspectRatio := 3.0 / 4.0
-		return int(float64(outsideHeight) * aspectRatio), outsideHeight
-	}
-	// 横長のデバイス（デスクトップ等）の場合は16:9のアスペクト比を使用
-	aspectRatio := 16.0 / 9.0
-	screenWidth := int(float64(outsideHeight) * aspectRatio)
-	if screenWidth > outsideWidth {
-		screenWidth = outsideWidth
-		screenHeight := int(float64(screenWidth) / aspectRatio)
-		return screenWidth, screenHeight
-	}
-	return screenWidth, outsideHeight
-}
-
-func (g *SampleGame) GetWindowOption() (windowTitle string, windowWidth, windowHeight int) {
-	return "*** Sample01 Game ***", 640 * 2, 480 * 2
-}
-
-func New() game.Game {
-	return &SampleGame{
-		count: 0,
-	}
+	return option
 }
