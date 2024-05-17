@@ -8,7 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/yabon-exe/yoggyebiten/game"
-	"github.com/yabon-exe/yoggyebiten/game/util"
+	"github.com/yabon-exe/yoggyebiten/game/util/graphic"
 )
 
 //go:embed assets/*
@@ -28,7 +28,7 @@ func (chainFire *ChainFire) Init() error {
 	if err != nil {
 		return err
 	}
-	chainFire.backImg = util.ReadImageFile(imgBackFile)
+	chainFire.backImg = graphic.ReadImageFile(imgBackFile)
 	return nil
 }
 
@@ -38,33 +38,33 @@ func (chainFire *ChainFire) Update() error {
 
 func (chainFire *ChainFire) Draw(screen *ebiten.Image) {
 
-	util.DrawBackImage(screen, chainFire.backImg)
+	graphic.DrawBackImage(screen, chainFire.backImg)
 
-	circle := util.Circle{
+	circle := graphic.Circle{
 		X:      0,
 		Y:      0,
 		Radius: 495,
 		Color:  color.RGBA{0, 255, 255, 100},
 	}
 
-	util.DrawCircle(screen, circle)
+	graphic.DrawCircle(screen, circle)
 	x, y := ebiten.CursorPosition()
 	msg := fmt.Sprintf("Cursor Position: (%d, %d)", x, y)
 	ebitenutil.DebugPrint(screen, msg)
 
-	v1 := util.Vertex{
+	v1 := graphic.Vertex{
 		X: 30,
 		Y: 30,
 	}
-	v2 := util.Vertex{
+	v2 := graphic.Vertex{
 		X: 50,
 		Y: 90,
 	}
-	v3 := util.Vertex{
+	v3 := graphic.Vertex{
 		X: 100,
 		Y: 100,
 	}
-	util.DrawLineArray(screen, []util.Vertex{v1, v2, v3}, color.RGBA{255, 0, 255, 0})
+	graphic.DrawLineArray(screen, []graphic.Vertex{v1, v2, v3}, color.RGBA{255, 0, 255, 0})
 }
 
 func (chainFire *ChainFire) GetGameOption() game.GameOption {

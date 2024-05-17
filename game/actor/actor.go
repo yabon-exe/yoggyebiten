@@ -6,6 +6,6 @@ type Actor interface {
 	Init() error
 	Update() error
 	CheckCollision(opponent Actor) bool
-	OnCollision(opponent Actor)
+	OnCollision(opponents []Actor)
 	Draw(screen *ebiten.Image)
 }
