@@ -2,6 +2,7 @@ package sample
 
 import (
 	"bytes"
+	"fmt"
 	"image"
 	"log"
 
@@ -39,10 +40,20 @@ func (g *SampleGame) Update() error {
 }
 
 func (g *SampleGame) Draw(screen *ebiten.Image) {
-	ebitenutil.DebugPrint(screen, "Hello, World!o0o0o0o0o0o0o0o0o0")
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(0, 0)
-	screen.DrawImage(runnerImage.SubImage(image.Rect(0, 0, 128, 128)).(*ebiten.Image), op)
+	// ebitenutil.DebugPrint(screen, "Hello, World!o0o0o0o0o0o0o0o0o0")
+	// op := &ebiten.DrawImageOptions{}
+	// op.GeoM.Translate(0, 0)
+	// screen.DrawImage(runnerImage.SubImage(image.Rect(0, 0, 128, 128)).(*ebiten.Image), op)
+
+	x, y := ebiten.CursorPosition()
+	msg := fmt.Sprintf("Cursor Position: (%d, %d)", x, y)
+
+	// 左マウスボタンが押されているか確認
+	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		msg += " - Left Button Pressed"
+	}
+
+	ebitenutil.DebugPrint(screen, msg)
 }
 
 func (g *SampleGame) GetGameOption() game.GameOption {
