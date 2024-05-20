@@ -2,12 +2,12 @@ package chainfire
 
 import (
 	"embed"
-	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/yabon-exe/yoggyebiten/game"
+	"github.com/yabon-exe/yoggyebiten/game/model"
 	"github.com/yabon-exe/yoggyebiten/game/util/graphic"
 )
 
@@ -16,6 +16,7 @@ var assets embed.FS
 
 type ChainFire struct {
 	backImg *ebiten.Image
+	testFW  *FireWork
 }
 
 func NewGame() game.Game {
@@ -29,42 +30,33 @@ func (chainFire *ChainFire) Init() error {
 		return err
 	}
 	chainFire.backImg = graphic.ReadImageFile(imgBackFile)
+
+	chainFire.testFW = NewFireWork(model.NewVertex(250, 150), 64, 0.5)
+
 	return nil
 }
 
 func (chainFire *ChainFire) Update() error {
+	chainFire.testFW.Update()
 	return nil
 }
 
 func (chainFire *ChainFire) Draw(screen *ebiten.Image) {
 
+	// ？？これがないと、画像読み込みで「image: unknown format」となる？？
+	ebitenutil.DebugPrint(screen, "")
+
 	graphic.DrawBackImage(screen, chainFire.backImg)
 
-	circle := graphic.Circle{
+	circle := model.Circle{
 		X:      0,
 		Y:      0,
 		Radius: 495,
-		Color:  color.RGBA{0, 255, 255, 100},
 	}
 
-	graphic.DrawCircle(screen, circle)
-	x, y := ebiten.CursorPosition()
-	msg := fmt.Sprintf("Cursor Position: (%d, %d)", x, y)
-	ebitenutil.DebugPrint(screen, msg)
+	graphic.DrawCircle(screen, circle, color.RGBA{0, 255, 255, 100})
 
-	v1 := graphic.Vertex{
-		X: 30,
-		Y: 30,
-	}
-	v2 := graphic.Vertex{
-		X: 50,
-		Y: 90,
-	}
-	v3 := graphic.Vertex{
-		X: 100,
-		Y: 100,
-	}
-	graphic.DrawLineArray(screen, []graphic.Vertex{v1, v2, v3}, color.RGBA{255, 0, 255, 0})
+	chainFire.testFW.Draw(screen)
 }
 
 func (chainFire *ChainFire) GetGameOption() game.GameOption {

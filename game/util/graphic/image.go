@@ -9,6 +9,7 @@ import (
 )
 
 func ReadImageFile(imgFile fs.File) *ebiten.Image {
+
 	img, _, err := image.Decode(imgFile)
 	if err != nil {
 		log.Fatal(err)
