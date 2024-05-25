@@ -10,8 +10,8 @@ import (
 	"github.com/yabon-exe/yoggyebiten/game/util/physics"
 )
 
-const lifespan = 150
-const decline = 100
+const lifespan = 120
+const decline = 80
 
 type Fire struct {
 	time        int
@@ -50,25 +50,21 @@ func (fire *Fire) Update() {
 		v0 := fire.vel0.GetY() // Y軸の値
 		fire.vel.SetY(-physics.MoveFall(v0, fire.g, fire.time))
 
-		fire.pos.X += fire.vel.GetX()
-		fire.pos.Y += fire.vel.GetY()
-
 		if fire.time > lifespan {
 			fire.ignition = false
 		} else if fire.time > decline {
 			rate := 1.0 - (float64(fire.time) / float64(lifespan))
 			if math.Abs(fire.vel.GetX()) > 0 {
 				fire.vel.SetX(fire.vel.GetX() * rate)
-			} else {
-				fire.vel.SetX(0)
 			}
 			if math.Abs(fire.vel.GetY()) > 0 {
 				fire.vel.SetY(fire.vel.GetY() * rate)
-			} else {
-				fire.vel.SetY(0)
 			}
 			fire.declineTime++
 		}
+
+		fire.pos.X += fire.vel.GetX()
+		fire.pos.Y += fire.vel.GetY()
 
 		// 負荷すごいなら考える
 		fire.orbit = append(fire.orbit, model.NewVertex(fire.pos.X, fire.pos.Y))
