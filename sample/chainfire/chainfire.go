@@ -16,6 +16,7 @@ var assets embed.FS
 type ChainFire struct {
 	backImg *ebiten.Image
 	testFW  *FireWork
+	testFW0 *FireWork
 }
 
 func NewGame() game.Game {
@@ -31,11 +32,13 @@ func (chainFire *ChainFire) Init() error {
 	chainFire.backImg = graphic.ReadImageFile(imgBackFile)
 
 	chainFire.testFW = NewFireWork(model.NewVertex(250, 150), 64, 2)
+	chainFire.testFW0 = NewFireWork(model.NewVertex(350, 495), 32, 2)
 
 	return nil
 }
 
 func (chainFire *ChainFire) Update() error {
+
 	chainFire.testFW.Update()
 
 	x, y := ebiten.CursorPosition()
@@ -44,6 +47,8 @@ func (chainFire *ChainFire) Update() error {
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 		chainFire.testFW.Explode()
 	}
+
+	chainFire.testFW0.Update()
 
 	return nil
 }
@@ -56,6 +61,7 @@ func (chainFire *ChainFire) Draw(screen *ebiten.Image) {
 	graphic.DrawBackImage(screen, chainFire.backImg)
 
 	chainFire.testFW.Draw(screen)
+	chainFire.testFW0.Draw(screen)
 }
 
 func (chainFire *ChainFire) GetGameOption() game.GameOption {
