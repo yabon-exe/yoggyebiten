@@ -2,7 +2,6 @@ package chainfire
 
 import (
 	"embed"
-	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -31,13 +30,21 @@ func (chainFire *ChainFire) Init() error {
 	}
 	chainFire.backImg = graphic.ReadImageFile(imgBackFile)
 
-	chainFire.testFW = NewFireWork(model.NewVertex(250, 150), 64, 0.5)
+	chainFire.testFW = NewFireWork(model.NewVertex(250, 150), 64, 2)
 
 	return nil
 }
 
 func (chainFire *ChainFire) Update() error {
 	chainFire.testFW.Update()
+
+	x, y := ebiten.CursorPosition()
+	chainFire.testFW.Move(x, y)
+
+	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		chainFire.testFW.Explode()
+	}
+
 	return nil
 }
 
@@ -47,14 +54,6 @@ func (chainFire *ChainFire) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "")
 
 	graphic.DrawBackImage(screen, chainFire.backImg)
-
-	circle := model.Circle{
-		X:      0,
-		Y:      0,
-		Radius: 495,
-	}
-
-	graphic.DrawCircle(screen, circle, color.RGBA{0, 255, 255, 100})
 
 	chainFire.testFW.Draw(screen)
 }
