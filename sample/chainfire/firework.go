@@ -10,10 +10,11 @@ import (
 )
 
 const upV0 = 8.0
-const g = 0.1
+const g = 0.06
 
 type FireWork struct {
 	time     int
+	enable   bool
 	seedMode bool
 	seedRad  int
 	seedVelY float64
@@ -32,6 +33,7 @@ func NewFireWork(start model.Vertex, fireListNum int, power float64) *FireWork {
 
 	return &FireWork{
 		time:     0,
+		enable:   false,
 		seedMode: true,
 		seedRad:  int(power * 2),
 		seedVelY: 0.0,
@@ -41,32 +43,41 @@ func NewFireWork(start model.Vertex, fireListNum int, power float64) *FireWork {
 }
 
 func (fireWork *FireWork) Update() {
-	fireWork.time++
-	if fireWork.seedMode {
-		fireWork.seedVelY = -physics.MoveFall(upV0, g, fireWork.time)
-		fireWork.startPos.Y += fireWork.seedVelY
-	} else {
-		for _, fire := range fireWork.fireList {
-			fire.Update()
+
+	if fireWork.enable {
+		fireWork.time++
+		if fireWork.seedMode {
+			fireWork.seedVelY = -physics.MoveFall(upV0, g, fireWork.time)
+			fireWork.startPos.Y += fireWork.seedVelY
+		} else {
+			for _, fire := range fireWork.fireList {
+				fire.Update()
+			}
 		}
 	}
+
 }
 
 func (fireWork *FireWork) Draw(screen *ebiten.Image) {
 
-	if fireWork.seedMode {
-		circle := model.Circle{
-			X:   fireWork.startPos.X,
-			Y:   fireWork.startPos.Y,
-			Rad: fireWork.seedRad,
-		}
-		graphic.DrawCircle(screen, circle, color.RGBA{255, 255, 255, 100})
-	} else {
-		for _, fire := range fireWork.fireList {
-			fire.Draw(screen)
+	if fireWork.enable {
+		if fireWork.seedMode {
+			circle := model.Circle{
+				X:   fireWork.startPos.X,
+				Y:   fireWork.startPos.Y,
+				Rad: fireWork.seedRad,
+			}
+			graphic.DrawCircle(screen, circle, color.RGBA{255, 255, 255, 100})
+		} else {
+			for _, fire := range fireWork.fireList {
+				fire.Draw(screen)
+			}
 		}
 	}
+}
 
+func (fireWork *FireWork) Shot() {
+	fireWork.enable = true
 }
 
 func (fireWork *FireWork) Explode() {
@@ -80,8 +91,7 @@ func (fireWork *FireWork) Explode() {
 }
 
 func (fireWork *FireWork) Move(x int, y int) {
-
+	fireWork.enable = true
 	fireWork.startPos.X = float64(x)
 	fireWork.startPos.Y = float64(y)
-
 }
