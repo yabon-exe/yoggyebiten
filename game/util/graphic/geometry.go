@@ -24,11 +24,11 @@ func DrawCircle(screen *ebiten.Image, circle model.Circle, color color.Color) {
 	circleImage := ebiten.NewImageFromImage(img)
 
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(circle.X-float64(circle.Rad), circle.Y-float64(circle.Rad))
+	op.GeoM.Translate(circle.Vertex.X-float64(circle.Rad), circle.Vertex.Y-float64(circle.Rad))
 	screen.DrawImage(circleImage, op)
 }
 
-func DrawLineArray(screen *ebiten.Image, vertices []model.Vertex, color color.RGBA, width float32) {
+func DrawLineArray(screen *ebiten.Image, vertices []model.Vertex, color color.Color, width float32) {
 
 	if len(vertices) < 2 {
 		return

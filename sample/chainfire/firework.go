@@ -16,28 +16,29 @@ type FireWork struct {
 	time     int
 	enable   bool
 	seedMode bool
-	seedRad  int
+	seedBody model.Circle
 	seedVelY float64
-	startPos model.Vertex
 	fireList []*Fire
 }
 
-func NewFireWork(start model.Vertex, fireListNum int, power float64) *FireWork {
+func NewFireWork(start model.Vertex, fireListNum int, power float64, color color.RGBA) *FireWork {
 
 	list := []*Fire{}
 
 	degree := model.PI_FULL_CIRCLE / float64(fireListNum)
 	for i := 0; i < fireListNum; i++ {
-		list = append(list, NewFire(degree*float64(i), power, 0.015))
+		list = append(list, NewFire(degree*float64(i), power, 0.015, color))
 	}
 
 	return &FireWork{
 		time:     0,
 		enable:   false,
 		seedMode: true,
-		seedRad:  int(power * 2),
+		seedBody: model.Circle{
+			Vertex: start,
+			Rad:    3,
+		},
 		seedVelY: 0.0,
-		startPos: start,
 		fireList: list,
 	}
 }
@@ -48,7 +49,7 @@ func (fireWork *FireWork) Update() {
 		fireWork.time++
 		if fireWork.seedMode {
 			fireWork.seedVelY = -physics.MoveFall(upV0, g, fireWork.time)
-			fireWork.startPos.Y += fireWork.seedVelY
+			fireWork.seedBody.Vertex.Y += fireWork.seedVelY
 		} else {
 			for _, fire := range fireWork.fireList {
 				fire.Update()
@@ -62,12 +63,7 @@ func (fireWork *FireWork) Draw(screen *ebiten.Image) {
 
 	if fireWork.enable {
 		if fireWork.seedMode {
-			circle := model.Circle{
-				X:   fireWork.startPos.X,
-				Y:   fireWork.startPos.Y,
-				Rad: fireWork.seedRad,
-			}
-			graphic.DrawCircle(screen, circle, color.RGBA{255, 255, 255, 100})
+			graphic.DrawCircle(screen, fireWork.seedBody, color.RGBA{255, 255, 255, 0})
 		} else {
 			for _, fire := range fireWork.fireList {
 				fire.Draw(screen)
@@ -84,7 +80,7 @@ func (fireWork *FireWork) Explode() {
 
 	if fireWork.seedMode {
 		for _, fire := range fireWork.fireList {
-			fire.Ignit(fireWork.startPos)
+			fire.Ignit(fireWork.seedBody.Vertex)
 		}
 		fireWork.seedMode = false
 	}
@@ -92,6 +88,6 @@ func (fireWork *FireWork) Explode() {
 
 func (fireWork *FireWork) Move(x int, y int) {
 	fireWork.enable = true
-	fireWork.startPos.X = float64(x)
-	fireWork.startPos.Y = float64(y)
+	fireWork.seedBody.Vertex.X = float64(x)
+	fireWork.seedBody.Vertex.Y = float64(y)
 }

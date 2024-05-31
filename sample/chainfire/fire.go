@@ -15,6 +15,7 @@ const decline = 50
 
 type Fire struct {
 	time        int
+	color       color.RGBA
 	declineTime int
 	ignition    bool
 	pos         model.Vertex
@@ -24,7 +25,7 @@ type Fire struct {
 	orbit       []model.Vertex
 }
 
-func NewFire(degree float64, speed float64, g float64) *Fire {
+func NewFire(degree float64, speed float64, g float64, color color.RGBA) *Fire {
 
 	velocity := model.NewVelocity2dFromDegree(degree)
 	velocity.Scale(speed)
@@ -33,6 +34,7 @@ func NewFire(degree float64, speed float64, g float64) *Fire {
 
 	return &Fire{
 		time:        0,
+		color:       color,
 		declineTime: 0,
 		ignition:    false,
 		vel:         velocity,
@@ -61,6 +63,7 @@ func (fire *Fire) Update() {
 			// Yは座標系が逆のためマイナス
 			v0 := fire.vel0.GetY() // Y軸の値
 			fire.vel.SetY(-physics.MoveFall(v0, fire.g, fire.time))
+
 		}
 
 		fire.pos.X += fire.vel.GetX()
@@ -79,5 +82,20 @@ func (fire *Fire) Ignit(start model.Vertex) {
 
 func (fire *Fire) Draw(screen *ebiten.Image) {
 
-	graphic.DrawLineArray(screen, fire.orbit, color.RGBA{R: 200, G: 0, B: 0, A: 0}, 1)
+	color := color.RGBA{}
+	if fire.time < decline {
+		rate := 1.0 - float64(fire.time)/float64(decline)
+		maxR := 255 - fire.color.R
+		maxG := 255 - fire.color.G
+		maxB := 255 - fire.color.B
+		color.R = fire.color.R + uint8((float64(maxR) * rate))
+		color.G = fire.color.G + uint8((float64(maxG) * rate))
+		color.B = fire.color.B + uint8((float64(maxB) * rate))
+	} else if fire.time < lifespan {
+		rate := 1.0 - float64(fire.declineTime)/float64(lifespan-decline)
+		color.R = uint8(float64(fire.color.R) * rate)
+		color.G = uint8(float64(fire.color.G) * rate)
+		color.B = uint8(float64(fire.color.B) * rate)
+	}
+	graphic.DrawLineArray(screen, fire.orbit, color, 1)
 }
