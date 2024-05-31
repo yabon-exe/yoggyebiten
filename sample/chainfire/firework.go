@@ -13,12 +13,13 @@ const upV0 = 8.0
 const g = 0.06
 
 type FireWork struct {
-	time     int
-	enable   bool
-	seedMode bool
-	seedBody model.Circle
-	seedVelY float64
-	fireList []*Fire
+	time        int
+	explodeTime int
+	enable      bool
+	seedMode    bool
+	seedBody    model.Circle
+	seedVelY    float64
+	fireList    []*Fire
 }
 
 func NewFireWork(start model.Vertex, fireListNum int, power float64, color color.RGBA) *FireWork {
@@ -31,9 +32,10 @@ func NewFireWork(start model.Vertex, fireListNum int, power float64, color color
 	}
 
 	return &FireWork{
-		time:     0,
-		enable:   false,
-		seedMode: true,
+		time:        0,
+		explodeTime: 0,
+		enable:      false,
+		seedMode:    true,
 		seedBody: model.Circle{
 			Vertex: start,
 			Rad:    3,
@@ -51,9 +53,14 @@ func (fireWork *FireWork) Update() {
 			fireWork.seedVelY = -physics.MoveFall(upV0, g, fireWork.time)
 			fireWork.seedBody.Vertex.Y += fireWork.seedVelY
 		} else {
+			fireWork.explodeTime++
 			for _, fire := range fireWork.fireList {
 				fire.Update()
 			}
+		}
+
+		if fireWork.explodeTime > lifespan {
+			fireWork.enable = false
 		}
 	}
 

@@ -49,7 +49,7 @@ func (chainFire *ChainFire) Init() error {
 	}
 	chainFire.backImg = graphic.ReadImageFile(imgBackFile)
 
-	chainFire.playerFw = NewFireWork(model.NewVertex(250, 150), 64, 2, color.RGBA{255, 255, 255, 0})
+	chainFire.playerFw = NewFireWork(model.NewVertex(250, 150), 16, 1, color.RGBA{255, 255, 255, 0})
 
 	params := []FWParam{}
 	colors := []color.RGBA{
@@ -65,7 +65,7 @@ func (chainFire *ChainFire) Init() error {
 	for i := 1; i <= 3; i++ {
 		for j := 1; j <= 3; j++ {
 			for _, color := range colors {
-				params = append(params, FWParam{fireListNum: i * 16, power: float64(j), color: color})
+				params = append(params, FWParam{fireListNum: i * 8, power: float64(j), color: color})
 			}
 		}
 	}
@@ -107,14 +107,7 @@ func (chainFire *ChainFire) Update() error {
 			fList = append(fList, fw.fireList...)
 		}
 	}
-	// for i := 0; i < FireWorkNum; i++ {
-	// 	fw := chainFire.fwList[i]
-	// 	fw.Update()
 
-	// 	if !fw.seedMode {
-	// 		fList = append(fList, fw.fireList...)
-	// 	}
-	// }
 	for _, fw := range chainFire.fwList {
 		if fw.seedMode {
 			for _, f := range fList {
@@ -122,14 +115,6 @@ func (chainFire *ChainFire) Update() error {
 			}
 		}
 	}
-	// for i := 0; i < FireWorkNum; i++ {
-	// 	fw := chainFire.fwList[i]
-	// 	if fw.seedMode {
-	// 		for _, f := range fList {
-	// 			CollisionFire(fw, f)
-	// 		}
-	// 	}
-	// }
 
 	chainFire.time++
 
