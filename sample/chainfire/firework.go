@@ -98,3 +98,14 @@ func (fireWork *FireWork) Move(x int, y int) {
 	fireWork.seedBody.Vertex.X = float64(x)
 	fireWork.seedBody.Vertex.Y = float64(y)
 }
+
+func (fireWork *FireWork) Reset() {
+	fireWork.time = 0
+	fireWork.explodeTime = 0
+	fireWork.enable = false
+	fireWork.seedMode = true
+	fireWork.seedVelY = 0.0
+	for _, fire := range fireWork.fireList {
+		fire.Reset()
+	}
+}

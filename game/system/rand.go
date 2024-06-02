@@ -38,20 +38,30 @@ type LimitedRandom[T any] struct {
 }
 
 func NewLimitedRandom[T any](values []T) *LimitedRandom[T] {
+
+	vs := make([]T, len(values))
+	allVs := make([]T, len(values))
+	copy(vs, values)
+	copy(allVs, values)
+
 	return &LimitedRandom[T]{
 		Random:    NewRandom(),
-		allValues: values,
-		values:    values,
+		allValues: allVs,
+		values:    vs,
 	}
 }
 
 func (lr *LimitedRandom[T]) SetAllValues(values []T) {
-	lr.allValues = values
+	allVs := make([]T, len(values))
+	copy(allVs, values)
+	lr.allValues = allVs
 	lr.Reset()
 }
 
 func (lr *LimitedRandom[T]) Reset() {
-	lr.values = lr.allValues
+	vs := make([]T, len(lr.allValues))
+	copy(vs, lr.allValues)
+	lr.values = vs
 }
 
 func (lr *LimitedRandom[T]) PopRandValue() T {

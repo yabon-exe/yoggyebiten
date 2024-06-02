@@ -99,3 +99,12 @@ func (fire *Fire) Draw(screen *ebiten.Image) {
 	}
 	graphic.DrawLineArray(screen, fire.orbit, color, 1)
 }
+
+func (fire *Fire) Reset() {
+	fire.time = 0
+	fire.declineTime = 0
+	fire.ignition = false
+	fire.vel.SetX(fire.vel0.GetX())
+	fire.vel.SetY(fire.vel0.GetY())
+	fire.orbit = []model.Vertex{}
+}

@@ -1,11 +1,9 @@
 package actor
 
-import "github.com/hajimehoshi/ebiten"
+import "github.com/yabon-exe/yoggyebiten/game/object"
 
 type Actor interface {
-	Init() error
-	Update() error
+	object.Object
 	CheckCollision(opponent Actor) bool
 	OnCollision(opponents []Actor)
-	Draw(screen *ebiten.Image)
 }
