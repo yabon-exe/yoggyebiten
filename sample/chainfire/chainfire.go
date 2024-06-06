@@ -124,6 +124,14 @@ func (chainFire *ChainFire) Update() error {
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 		chainFire.playerFw.Explode()
 	}
+	// スマホのタップ入力を取得
+	touchIDs := []ebiten.TouchID{}
+	touchIDs = ebiten.AppendTouchIDs(touchIDs[:0])
+	for _, t := range touchIDs {
+		x, y := ebiten.TouchPosition(t)
+		chainFire.playerFw.Move(x, y)
+		chainFire.playerFw.Explode()
+	}
 
 	// 打ち上げ
 	if chainFire.time%ShotInterval == 0 && chainFire.time/ShotInterval < len(chainFire.fwList) {
