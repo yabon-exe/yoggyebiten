@@ -10,7 +10,6 @@ import (
 )
 
 const upV0 = 8.0
-const g = 0.06
 
 type FireWork struct {
 	time        int
@@ -20,9 +19,10 @@ type FireWork struct {
 	seedBody    model.Circle
 	seedVelY    float64
 	fireList    []*Fire
+	g           float64
 }
 
-func NewFireWork(start model.Vertex, fireListNum int, power float64, color color.RGBA) *FireWork {
+func NewFireWork(start model.Vertex, fireListNum int, power float64, color color.RGBA, g float64) *FireWork {
 
 	list := []*Fire{}
 
@@ -42,6 +42,7 @@ func NewFireWork(start model.Vertex, fireListNum int, power float64, color color
 		},
 		seedVelY: 0.0,
 		fireList: list,
+		g:        g,
 	}
 }
 
@@ -50,7 +51,7 @@ func (fireWork *FireWork) Update() {
 	if fireWork.enable {
 		fireWork.time++
 		if fireWork.seedMode {
-			fireWork.seedVelY = -physics.MoveFall(upV0, g, fireWork.time)
+			fireWork.seedVelY = -physics.MoveFall(upV0, fireWork.g, fireWork.time)
 			fireWork.seedBody.Vertex.Y += fireWork.seedVelY
 		} else {
 			fireWork.explodeTime++

@@ -16,6 +16,7 @@ const (
 )
 
 const (
+	// 開発環境の大きさ次第
 	MOBILE_WIDTH  = 720
 	MOBILE_HEIGHT = 1280
 )

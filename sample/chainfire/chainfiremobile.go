@@ -16,20 +16,20 @@ import (
 )
 
 //go:embed assets/*
-var assets embed.FS
+var assetsMobile embed.FS
 
-const GameWidth = 880.0
-const GameHeight = 495.0
-const ShotInterval = 8
-const GameEndTime = 800
+const GameWidthMobile = game.MOBILE_WIDTH
+const GameHeightMobile = game.MOBILE_HEIGHT
+const ShotIntervalMobile = 8
+const GameEndTimeMobile = 640
 
-type FWParam struct {
+type FWParamMobile struct {
 	fireListNum int
 	power       float64
 	color       color.RGBA
 }
 
-type ChainFire struct {
+type ChainFireMobile struct {
 	time          int
 	backImg       *ebiten.Image
 	playerFw      *FireWork
@@ -41,16 +41,15 @@ type ChainFire struct {
 	explodeCount  int
 }
 
-func NewGame() game.Game {
-
-	return &ChainFire{}
+func NewGameMobile() game.Game {
+	return &ChainFireMobile{}
 }
 
-func (chainFire *ChainFire) Init() error {
+func (chainFire *ChainFireMobile) Init() error {
 
 	chainFire.time = 0
 
-	imgBackFile, err := assets.Open("assets/back.png")
+	imgBackFile, err := assetsMobile.Open("assets/back.png")
 	if err != nil {
 		return err
 	}
@@ -58,7 +57,7 @@ func (chainFire *ChainFire) Init() error {
 
 	chainFire.playerFw = NewFireWork(model.NewVertex(250, 150), 16, 1, color.RGBA{255, 255, 255, 0}, 0.06)
 
-	params := []FWParam{}
+	params := []FWParamMobile{}
 	colors := []color.RGBA{
 		{R: 255, G: 0, B: 0, A: 0},
 		{R: 0, G: 255, B: 0, A: 0},
@@ -73,7 +72,7 @@ func (chainFire *ChainFire) Init() error {
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
 			for k, color := range colors {
-				params = append(params, FWParam{fireListNum: (i + 1) * 12, power: float64(j + 1), color: color})
+				params = append(params, FWParamMobile{fireListNum: (i + 1) * 12, power: float64(j + 1), color: color})
 				idxs = append(idxs, i*3*len(colors)+j*len(colors)+k)
 			}
 		}
@@ -83,10 +82,10 @@ func (chainFire *ChainFire) Init() error {
 
 	chainFire.random = system.NewRandom()
 	fws := []*FireWork{}
-	fwBownds := model.Bounds(GameWidth/2.0-20, GameHeight+200.0, GameWidth*0.8, 200)
+	fwBownds := model.Bounds(GameWidthMobile/2.0, GameHeightMobile+200, GameWidthMobile, 200)
 	for _, param := range params {
 		x, y := chainFire.random.GetRandFromRect(fwBownds)
-		fws = append(fws, NewFireWork(model.NewVertex(x, y), param.fireListNum, param.power, param.color, 0.06))
+		fws = append(fws, NewFireWork(model.NewVertex(x, y), param.fireListNum, param.power, param.color, 0.026))
 	}
 	chainFire.fwList = fws
 
@@ -108,7 +107,7 @@ func (chainFire *ChainFire) Init() error {
 	return nil
 }
 
-func (chainFire *ChainFire) Update() error {
+func (chainFire *ChainFireMobile) Update() error {
 
 	chainFire.explodeCount = 0
 
@@ -154,7 +153,7 @@ func (chainFire *ChainFire) Update() error {
 	for _, fw := range chainFire.fwList {
 		if fw.seedMode {
 			for _, f := range fList {
-				collisionFire(fw, f)
+				collisionFireMobile(fw, f)
 			}
 		} else {
 			chainFire.explodeCount++
@@ -166,7 +165,7 @@ func (chainFire *ChainFire) Update() error {
 	return nil
 }
 
-func (chainFire *ChainFire) Draw(screen *ebiten.Image) {
+func (chainFire *ChainFireMobile) Draw(screen *ebiten.Image) {
 
 	// ？？これがないと、画像読み込みで「image: unknown format」となる？？
 	ebitenutil.DebugPrint(screen, "")
@@ -186,22 +185,22 @@ func (chainFire *ChainFire) Draw(screen *ebiten.Image) {
 	}
 }
 
-func (chainFire *ChainFire) GetGameOption() game.GameOption {
+func (chainFire *ChainFireMobile) GetGameOption() game.GameOption {
 	option := game.GameOption{
-		DeviceType:   game.PC,
-		WindowTitle:  "*** Yoggy ChainFire ***",
-		WindowWidth:  GameWidth,
-		WindowHeight: GameHeight,
+		DeviceType:   game.MOBILE_PHONE_PORTRAIT,
+		WindowTitle:  "*** Yoggy ChainFire Mobile ***",
+		WindowWidth:  GameWidthMobile / 2,
+		WindowHeight: GameHeightMobile / 2,
 	}
 	return option
 }
 
-func (chainFire *ChainFire) reset() {
+func (chainFire *ChainFireMobile) reset() {
 
 	chainFire.explodeCount = 0
 	chainFire.time = 0
 	chainFire.limitedRandom.Reset()
-	fwBownds := model.Bounds(GameWidth/2.0-20, GameHeight+200.0, GameWidth*0.8, 200)
+	fwBownds := model.Bounds(GameWidthMobile/2.0, GameHeightMobile+200, GameWidthMobile, 200)
 	for _, fw := range chainFire.fwList {
 		x, y := chainFire.random.GetRandFromRect(fwBownds)
 		fw.Move(int(x), int(y))
@@ -210,7 +209,7 @@ func (chainFire *ChainFire) reset() {
 	chainFire.playerFw.Reset()
 }
 
-func collisionFire(fw *FireWork, f *Fire) {
+func collisionFireMobile(fw *FireWork, f *Fire) {
 	if physics.CheckCollisionVertexAndCircle(f.pos, fw.seedBody) {
 		fw.Explode()
 	}
