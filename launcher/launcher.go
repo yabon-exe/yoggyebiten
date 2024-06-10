@@ -39,32 +39,7 @@ func (ebitenGame *EbitenGame) Layout(outsideWidth int, outsideHeight int) (int, 
 	default:
 		logger.Fatal("unexpected DeviceType.")
 	}
-
-	// // 非常に縦長のデバイスの場合（スマートフォンなど）、9:16のアスペクト比を使用
-	// if float64(outsideHeight) > float64(outsideWidth)*1.8 {
-	// 	aspectRatio := 9.0 / 16.0
-	// 	logger.Info("window aspect ratio 9:16 (SmartPhone)")
-	// 	return int(float64(outsideHeight) * aspectRatio), outsideHeight
-	// }
-	// // 縦長のデバイス（タブレット等）の場合は3:4のアスペクト比を使用
-	// if float64(outsideHeight) > float64(outsideWidth)*1.3 {
-	// 	aspectRatio := 3.0 / 4.0
-	// 	logger.Info("window aspect ratio 3:4 (Tablet)")
-	// 	return int(float64(outsideHeight) * aspectRatio), outsideHeight
-	// }
-	// // 横長のデバイス（デスクトップ等）の場合は16:9のアスペクト比を使用
-	// aspectRatio := 16.0 / 9.0
-	// screenWidth := int(float64(outsideHeight) * aspectRatio)
-	// if screenWidth > outsideWidth {
-	// 	screenWidth = outsideWidth
-	// 	screenHeight := int(float64(screenWidth) / aspectRatio)
-	// 	logger.Info("window aspect ratio 16:9 (PC Adjusted)")
-	// 	return screenWidth, screenHeight
-	// }
-
-	// logger.Info("window aspect ratio 16:9 (PC)")
 	return option.WindowWidth, option.WindowHeight
-	// return option.WindowWidth * 2, option.WindowHeight * 2
 }
 
 func RunGame(yoggyGame game.Game) {
