@@ -1,6 +1,8 @@
 package game
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 type Scene interface {
 	Init() error
@@ -13,7 +15,7 @@ type Wipe interface {
 	Init() error
 	Reset() error
 	Update() (bool, error)
-	Draw(screen *ebiten.Image)
+	Draw(screen *ebiten.Image, screenCapture *ebiten.Image)
 }
 
 type IMulitSceneGame interface {
@@ -24,11 +26,12 @@ type IMulitSceneGame interface {
 
 type MulitSceneGame struct {
 	IMulitSceneGame
-	sceneList   []*Scene
-	wipeList    []*Wipe
-	nowSceneIdx int
-	nowWipeIdx  int
-	isWiping    bool
+	sceneList        []*Scene
+	wipeList         []*Wipe
+	nowSceneIdx      int
+	nowWipeIdx       int
+	isWiping         bool
+	screenCaptureImg *ebiten.Image
 }
 
 func (game *MulitSceneGame) Init() error {
@@ -48,6 +51,8 @@ func (game *MulitSceneGame) Init() error {
 
 	game.isWiping = false
 
+	game.screenCaptureImg = nil
+
 	return nil
 }
 
@@ -63,6 +68,7 @@ func (game *MulitSceneGame) Update() error {
 	}
 
 	if wipeIdx >= 0 {
+
 		game.isWiping = true
 		game.nowWipeIdx = wipeIdx
 	}
@@ -82,4 +88,13 @@ func (game *MulitSceneGame) Update() error {
 }
 
 func (game *MulitSceneGame) Draw(screen *ebiten.Image) {
+	if game.isWiping {
+		if game.screenCaptureImg == nil {
+			game.screenCaptureImg = ebiten.NewImage(ebiten.WindowSize())
+			game.screenCaptureImg.DrawImage(screen, nil)
+		}
+		(*game.wipeList[game.nowWipeIdx]).Draw(screen, game.screenCaptureImg)
+	}
+
+	(*game.sceneList[game.nowSceneIdx]).Draw(screen)
 }
