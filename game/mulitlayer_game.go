@@ -81,6 +81,8 @@ func (game *MulitSceneGame) Update() error {
 		if endWipe {
 			game.isWiping = false
 			game.nowWipeIdx = -1
+			// ワイプ開始時ゲームキャプチャ情報を消す
+			game.screenCaptureImg = nil
 		}
 	}
 
@@ -90,6 +92,8 @@ func (game *MulitSceneGame) Update() error {
 func (game *MulitSceneGame) Draw(screen *ebiten.Image) {
 	if game.isWiping {
 		if game.screenCaptureImg == nil {
+			// ワイプ起動時はキャプチャ情報なし
+			// この時のゲーム画面を取得
 			game.screenCaptureImg = ebiten.NewImage(ebiten.WindowSize())
 			game.screenCaptureImg.DrawImage(screen, nil)
 		}
