@@ -1,21 +1,35 @@
 package wipesample
 
-import "github.com/yabon-exe/yoggyebiten/game"
+import (
+	"github.com/yabon-exe/yoggyebiten/game"
+	"github.com/yabon-exe/yoggyebiten/game/scene"
+	"github.com/yabon-exe/yoggyebiten/game/scene/wipe"
+	"github.com/yabon-exe/yoggyebiten/game/scene/wipe/fadewipe"
+)
 
 type WipeSample struct {
 	game.MulitSceneGame
 }
 
-func NewGame() game.Game {
-	return &WipeSample{}
-}
+const (
+	DUMMY_SCENE_ID_1 = 0
+	DUMMY_SCENE_ID_2 = 1
 
-func (game *WipeSample) CrateSceneList() []*game.Scene {
-	return nil
-}
+	WIPE_FADEINOUT_IDX = 0
+)
 
-func (game *WipeSample) CrateWipeList() []*game.Wipe {
-	return nil
+func NewGame() *WipeSample {
+	return &WipeSample{
+		MulitSceneGame: game.MulitSceneGame{
+			SceneList: []scene.Scene{
+				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_2},
+				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_1},
+			},
+			WipeList: []wipe.Wipe{
+				&fadewipe.FadeInOutWipe{Speed: 10},
+			},
+		},
+	}
 }
 
 func (g *WipeSample) GetGameOption() game.GameOption {

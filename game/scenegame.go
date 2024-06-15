@@ -2,32 +2,14 @@ package game
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/yabon-exe/yoggyebiten/game/scene"
+	"github.com/yabon-exe/yoggyebiten/game/scene/wipe"
 )
 
-type Scene interface {
-	Init() error
-	Reset(*ebiten.Image) error
-	Update(bool) (int, int, error)
-	Draw(screen *ebiten.Image)
-}
-
-type Wipe interface {
-	Init() error
-	Reset() error
-	Update() (bool, error)
-	Draw(screen *ebiten.Image, screenCapture *ebiten.Image)
-}
-
-type IMulitSceneGame interface {
-	Game
-	CrateSceneList() []*Scene
-	CrateWipeList() []*Wipe
-}
-
 type MulitSceneGame struct {
-	IMulitSceneGame
-	sceneList        []*Scene
-	wipeList         []*Wipe
+	SceneList        []scene.Scene
+	WipeList         []wipe.Wipe
 	nowSceneIdx      int
 	nowWipeIdx       int
 	isWiping         bool
@@ -36,45 +18,45 @@ type MulitSceneGame struct {
 
 func (game *MulitSceneGame) Init() error {
 
-	game.sceneList = game.CrateSceneList()
-	game.wipeList = game.CrateWipeList()
-
-	game.nowSceneIdx = 0
-	game.nowWipeIdx = -1
-
-	for _, scene := range game.sceneList {
-		(*scene).Init()
+	for _, scene := range game.SceneList {
+		scene.Init()
 	}
-	for _, wipe := range game.wipeList {
-		(*wipe).Init()
+	for _, wipe := range game.WipeList {
+		wipe.Init()
 	}
 
 	game.isWiping = false
-
 	game.screenCaptureImg = nil
+	game.nowSceneIdx = 0
+	game.SceneList[game.nowSceneIdx].Reset()
+	game.nowWipeIdx = -1
 
 	return nil
 }
 
 func (game *MulitSceneGame) Update() error {
 
-	sceneIdx, wipeIdx, sErr := (*game.sceneList[game.nowSceneIdx]).Update(game.isWiping)
+	sceneIdx, wipeIdx, sErr := game.SceneList[game.nowSceneIdx].Update(game.isWiping)
 	if sErr != nil {
 		return sErr
 	}
 
 	if sceneIdx >= 0 {
+		// 次のシーン開始
 		game.nowSceneIdx = sceneIdx
+		game.SceneList[game.nowSceneIdx].Reset()
 	}
 
 	if wipeIdx >= 0 {
-
+		// ワイプ開始
 		game.isWiping = true
 		game.nowWipeIdx = wipeIdx
+		w, h := ebiten.WindowSize()
+		game.WipeList[game.nowWipeIdx].Reset(w, h)
 	}
 
 	if game.isWiping {
-		endWipe, wErr := (*game.wipeList[game.nowWipeIdx]).Update()
+		endWipe, wErr := game.WipeList[game.nowWipeIdx].Update()
 		if wErr != nil {
 			return sErr
 		}
@@ -90,6 +72,10 @@ func (game *MulitSceneGame) Update() error {
 }
 
 func (game *MulitSceneGame) Draw(screen *ebiten.Image) {
+
+	// ？？これがないと、画像読み込みで「image: unknown format」となる？？
+	ebitenutil.DebugPrint(screen, "")
+
 	if game.isWiping {
 		if game.screenCaptureImg == nil {
 			// ワイプ起動時はキャプチャ情報なし
@@ -97,8 +83,8 @@ func (game *MulitSceneGame) Draw(screen *ebiten.Image) {
 			game.screenCaptureImg = ebiten.NewImage(ebiten.WindowSize())
 			game.screenCaptureImg.DrawImage(screen, nil)
 		}
-		(*game.wipeList[game.nowWipeIdx]).Draw(screen, game.screenCaptureImg)
+		game.WipeList[game.nowWipeIdx].Draw(screen, game.screenCaptureImg)
 	}
 
-	(*game.sceneList[game.nowSceneIdx]).Draw(screen)
+	game.SceneList[game.nowSceneIdx].Draw(screen)
 }
