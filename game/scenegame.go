@@ -20,8 +20,8 @@ type Wipe interface {
 
 type IMulitSceneGame interface {
 	Game
-	crateSceneList() []*Scene
-	crateWipeList() []*Wipe
+	CrateSceneList() []*Scene
+	CrateWipeList() []*Wipe
 }
 
 type MulitSceneGame struct {
@@ -36,8 +36,8 @@ type MulitSceneGame struct {
 
 func (game *MulitSceneGame) Init() error {
 
-	game.sceneList = game.crateSceneList()
-	game.wipeList = game.crateWipeList()
+	game.sceneList = game.CrateSceneList()
+	game.wipeList = game.CrateWipeList()
 
 	game.nowSceneIdx = 0
 	game.nowWipeIdx = -1
