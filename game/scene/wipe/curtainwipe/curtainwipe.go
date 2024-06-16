@@ -1,35 +1,66 @@
 package curtainwipe
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/yabon-exe/yoggyebiten/game/model"
 )
 
-const MAX_RGB = 255
+const (
+	MAX_RGB = 255
+)
+
+type Direct int
+
+const (
+	MOTION_LEFT Direct = iota
+	MOTION_RIGHT
+	MOTION_UP
+	MOTION_DOWN
+)
+
+type CurtainWipeMotion interface {
+	reset(rect *model.Rect[int], width int, height int)
+	runClose(rect *model.Rect[int], speed int, maxWidth int, maxHeight int) bool
+	runOpen(rect *model.Rect[int], speed int, maxWidth int, maxHeight int) bool
+}
 
 type CurtainWipe struct {
 	isClosing   bool
-	curtainRect model.Rect[int]
-	Speed       int
+	curtainRect *model.Rect[int]
 	maxWidth    int
 	maxHeight   int
+	motion      CurtainWipeMotion
+	Speed       int
+	Direct      Direct
 }
 
 func (w *CurtainWipe) Init() error {
 
+	switch w.Direct {
+	case MOTION_LEFT:
+		w.motion = &MotionLeft{}
+	case MOTION_RIGHT:
+		w.motion = &MotionRight{}
+	case MOTION_UP:
+		w.motion = &MotionUp{}
+	case MOTION_DOWN:
+		w.motion = &MotionDown{}
+	default:
+		w.motion = &MotionLeft{}
+	}
+
+	w.curtainRect = &model.Rect[int]{}
+
 	return nil
 }
 func (w *CurtainWipe) Reset(width int, height int) error {
-	w.isClosing = false
+	w.isClosing = true
 	w.maxWidth = width
 	w.maxHeight = height
-
-	w.curtainRect.Left = 0
-	w.curtainRect.Right = 0
-	w.curtainRect.Top = 0
-	w.curtainRect.Bottom = height
+	w.motion.reset(w.curtainRect, width, height)
 
 	return nil
 }
@@ -37,16 +68,14 @@ func (w *CurtainWipe) Update() (bool, error) {
 
 	wipeEnd := false
 
-	if !w.isClosing {
-		w.curtainRect.Right += w.Speed
-		if w.curtainRect.Right >= w.maxWidth {
-			w.curtainRect.Right = w.maxWidth
-			w.isClosing = true
+	if w.isClosing {
+		closeEnd := w.motion.runClose(w.curtainRect, w.Speed, w.maxWidth, w.maxHeight)
+		if closeEnd {
+			w.isClosing = false
 		}
 	} else {
-		w.curtainRect.Left += w.Speed
-		if w.curtainRect.Left >= w.maxWidth {
-			w.curtainRect.Left = w.maxWidth
+		oepnEnd := w.motion.runOpen(w.curtainRect, w.Speed, w.maxWidth, w.maxHeight)
+		if oepnEnd {
 			wipeEnd = true
 		}
 	}
@@ -54,10 +83,11 @@ func (w *CurtainWipe) Update() (bool, error) {
 	return wipeEnd, nil
 }
 func (w *CurtainWipe) Draw(screen *ebiten.Image, screenCapture *ebiten.Image) {
-	if !w.isClosing {
+	if w.isClosing {
 		screen.DrawImage(screenCapture, nil)
 	}
 
+	fmt.Println(w.curtainRect.GetHW())
 	curtain := ebiten.NewImage(w.curtainRect.GetHW())
 	curtain.Fill(color.Black)
 	op := &ebiten.DrawImageOptions{}

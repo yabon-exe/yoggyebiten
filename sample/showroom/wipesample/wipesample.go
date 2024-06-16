@@ -27,7 +27,10 @@ func NewGame() *WipeSample {
 			},
 			WipeList: []wipe.Wipe{
 				// &fadewipe.FadeInOutWipe{Speed: 5},
-				&curtainwipe.CurtainWipe{Speed: 50},
+				// &curtainwipe.CurtainWipe{Speed: 50, Direct: curtainwipe.MOTION_LEFT},
+				// &curtainwipe.CurtainWipe{Speed: 50, Direct: curtainwipe.MOTION_RIGHT},
+				// &curtainwipe.CurtainWipe{Speed: 20, Direct: curtainwipe.MOTION_UP},
+				&curtainwipe.CurtainWipe{Speed: 20, Direct: curtainwipe.MOTION_DOWN},
 			},
 		},
 	}
