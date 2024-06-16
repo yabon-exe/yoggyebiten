@@ -10,7 +10,7 @@ const MAX_RGB = 255
 
 type FadeInOutWipe struct {
 	rgb       int
-	Speed     int
+	SpeedRate float64
 	isClosing bool
 	width     int
 	height    int
@@ -29,14 +29,15 @@ func (w *FadeInOutWipe) Reset(width int, height int) error {
 }
 func (w *FadeInOutWipe) Update() (bool, error) {
 
+	speed := MAX_RGB * w.SpeedRate
 	wipeEnd := false
 	if !w.isClosing {
-		w.rgb += w.Speed
+		w.rgb += int(speed)
 		if w.rgb > MAX_RGB {
 			w.isClosing = true
 		}
 	} else {
-		w.rgb -= w.Speed
+		w.rgb -= int(speed)
 		if w.rgb <= 0 {
 			wipeEnd = true
 		}

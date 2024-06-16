@@ -1,7 +1,6 @@
 package curtainwipe
 
 import (
-	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -23,8 +22,8 @@ const (
 
 type CurtainWipeMotion interface {
 	reset(rect *model.Rect[int], width int, height int)
-	runClose(rect *model.Rect[int], speed int, maxWidth int, maxHeight int) bool
-	runOpen(rect *model.Rect[int], speed int, maxWidth int, maxHeight int) bool
+	runClose(rect *model.Rect[int], speedRate float64, maxWidth int, maxHeight int) bool
+	runOpen(rect *model.Rect[int], speedRate float64, maxWidth int, maxHeight int) bool
 }
 
 type CurtainWipe struct {
@@ -33,7 +32,7 @@ type CurtainWipe struct {
 	maxWidth    int
 	maxHeight   int
 	motion      CurtainWipeMotion
-	Speed       int
+	SpeedRate   float64
 	Direct      Direct
 }
 
@@ -69,12 +68,12 @@ func (w *CurtainWipe) Update() (bool, error) {
 	wipeEnd := false
 
 	if w.isClosing {
-		closeEnd := w.motion.runClose(w.curtainRect, w.Speed, w.maxWidth, w.maxHeight)
+		closeEnd := w.motion.runClose(w.curtainRect, w.SpeedRate, w.maxWidth, w.maxHeight)
 		if closeEnd {
 			w.isClosing = false
 		}
 	} else {
-		oepnEnd := w.motion.runOpen(w.curtainRect, w.Speed, w.maxWidth, w.maxHeight)
+		oepnEnd := w.motion.runOpen(w.curtainRect, w.SpeedRate, w.maxWidth, w.maxHeight)
 		if oepnEnd {
 			wipeEnd = true
 		}
@@ -87,7 +86,6 @@ func (w *CurtainWipe) Draw(screen *ebiten.Image, screenCapture *ebiten.Image) {
 		screen.DrawImage(screenCapture, nil)
 	}
 
-	fmt.Println(w.curtainRect.GetHW())
 	curtain := ebiten.NewImage(w.curtainRect.GetHW())
 	curtain.Fill(color.Black)
 	op := &ebiten.DrawImageOptions{}

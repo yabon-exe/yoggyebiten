@@ -1,6 +1,8 @@
 package curtainwipe
 
-import "github.com/yabon-exe/yoggyebiten/game/model"
+import (
+	"github.com/yabon-exe/yoggyebiten/game/model"
+)
 
 type MotionDown struct {
 }
@@ -12,16 +14,20 @@ func (motion *MotionDown) reset(rect *model.Rect[int], width int, height int) {
 	rect.Bottom = 0
 }
 
-func (motion *MotionDown) runClose(rect *model.Rect[int], speed int, maxWidth int, maxHeight int) bool {
-	rect.Bottom += speed
+func (motion *MotionDown) runClose(rect *model.Rect[int], speedRate float64, maxWidth int, maxHeight int) bool {
+
+	speed := float64(maxHeight) * speedRate
+	rect.Bottom += int(speed)
 	if rect.Bottom >= maxHeight {
 		rect.Bottom = maxHeight
 		return true
 	}
 	return false
 }
-func (motion *MotionDown) runOpen(rect *model.Rect[int], speed int, maxWidth int, maxHeight int) bool {
-	rect.Top += speed
+func (motion *MotionDown) runOpen(rect *model.Rect[int], speedRate float64, maxWidth int, maxHeight int) bool {
+
+	speed := float64(maxHeight) * speedRate
+	rect.Top += int(speed)
 	if rect.Top >= maxHeight {
 		rect.Top = maxHeight
 		return true

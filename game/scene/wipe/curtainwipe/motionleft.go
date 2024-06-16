@@ -1,6 +1,8 @@
 package curtainwipe
 
-import "github.com/yabon-exe/yoggyebiten/game/model"
+import (
+	"github.com/yabon-exe/yoggyebiten/game/model"
+)
 
 type MotionLeft struct {
 }
@@ -12,16 +14,20 @@ func (motion *MotionLeft) reset(rect *model.Rect[int], width int, height int) {
 	rect.Bottom = height
 }
 
-func (motion *MotionLeft) runClose(rect *model.Rect[int], speed int, maxWidth int, maxHeight int) bool {
-	rect.Right += speed
+func (motion *MotionLeft) runClose(rect *model.Rect[int], speedRate float64, maxWidth int, maxHeight int) bool {
+
+	speed := float64(maxWidth) * speedRate
+	rect.Right += int(speed)
 	if rect.Right >= maxWidth {
 		rect.Right = maxWidth
 		return true
 	}
 	return false
 }
-func (motion *MotionLeft) runOpen(rect *model.Rect[int], speed int, maxWidth int, maxHeight int) bool {
-	rect.Left += speed
+func (motion *MotionLeft) runOpen(rect *model.Rect[int], speedRate float64, maxWidth int, maxHeight int) bool {
+
+	speed := float64(maxWidth) * speedRate
+	rect.Left += int(speed)
 	if rect.Left >= maxWidth {
 		rect.Left = maxWidth
 		return true
