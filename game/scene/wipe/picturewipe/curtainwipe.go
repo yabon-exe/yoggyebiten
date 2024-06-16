@@ -12,6 +12,10 @@ const (
 	MOTION_RIGHT
 	MOTION_UP
 	MOTION_DOWN
+	MOTION_UP_LEFT
+	MOTION_UP_RIGHT
+	MOTION_DOWN_LEFT
+	MOTION_DOWN_RIGHT
 )
 
 type PictureWipeMotion interface {
@@ -38,6 +42,14 @@ func (w *PictureWipe) Init() error {
 		w.motion = &MotionUp{}
 	case MOTION_DOWN:
 		w.motion = &MotionDown{}
+	case MOTION_UP_LEFT:
+		w.motion = &MotionUpLeft{}
+	case MOTION_UP_RIGHT:
+		w.motion = &MotionUpRight{}
+	case MOTION_DOWN_LEFT:
+		w.motion = &MotionDownLeft{}
+	case MOTION_DOWN_RIGHT:
+		w.motion = &MotionDownRight{}
 	default:
 		w.motion = &MotionLeft{}
 	}

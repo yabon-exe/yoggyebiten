@@ -38,7 +38,11 @@ func NewGame() *WipeSample {
 				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_LEFT},
 				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_RIGHT},
 				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_UP},
-				&picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_DOWN},
+				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_DOWN},
+				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_UP_LEFT},
+				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_UP_RIGHT},
+				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_DOWN_LEFT},
+				&picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_DOWN_RIGHT},
 			},
 		},
 	}
