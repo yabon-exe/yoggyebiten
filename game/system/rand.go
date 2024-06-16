@@ -29,7 +29,7 @@ func (random *Random) GetRangeInt(max int) int {
 	return random.getRand().Int() % max
 }
 
-func (random *Random) GetRandFromRect(rect model.Rect) (float64, float64) {
+func (random *Random) GetRandFromRect(rect model.Rect[float64]) (float64, float64) {
 
 	r := random.getRand()
 	fx := r.Float64()

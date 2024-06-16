@@ -82,7 +82,6 @@ func (game *MulitSceneGame) Draw(screen *ebiten.Image) {
 		// ワイプ起動時はキャプチャ情報なし
 		// この時のゲーム画面を取得\
 		game.screenCaptureImg = ebiten.NewImage(ebiten.WindowSize())
-		// game.screenCaptureImg = ebiten.NewImage(111, 111)
 		game.screenCaptureImg.DrawImage(screen, nil)
 	} else {
 		game.WipeList[game.nowWipeIdx].Draw(screen, game.screenCaptureImg)

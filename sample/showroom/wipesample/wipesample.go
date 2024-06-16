@@ -4,7 +4,7 @@ import (
 	"github.com/yabon-exe/yoggyebiten/game"
 	"github.com/yabon-exe/yoggyebiten/game/scene"
 	"github.com/yabon-exe/yoggyebiten/game/scene/wipe"
-	"github.com/yabon-exe/yoggyebiten/game/scene/wipe/fadewipe"
+	"github.com/yabon-exe/yoggyebiten/game/scene/wipe/curtainwipe"
 )
 
 type WipeSample struct {
@@ -26,7 +26,8 @@ func NewGame() *WipeSample {
 				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_1},
 			},
 			WipeList: []wipe.Wipe{
-				&fadewipe.FadeInOutWipe{Speed: 5},
+				// &fadewipe.FadeInOutWipe{Speed: 5},
+				&curtainwipe.CurtainWipe{Speed: 50},
 			},
 		},
 	}

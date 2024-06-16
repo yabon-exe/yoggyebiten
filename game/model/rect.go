@@ -1,22 +1,22 @@
 package model
 
-type Rect struct {
-	Left   float64
-	Right  float64
-	Top    float64
-	Bottom float64
+type Rect[T int | uint | float32 | float64] struct {
+	Left   T
+	Right  T
+	Top    T
+	Bottom T
 }
 
-func (rect *Rect) GetHW() (float64, float64) {
+func (rect *Rect[T]) GetHW() (T, T) {
 	return rect.Right - rect.Left, rect.Bottom - rect.Top
 }
 
-func Bounds(CenterX float64, CenterY float64, Width float64, Height float64) Rect {
+func Bounds[T int | uint | float32 | float64](CenterX T, CenterY T, Width T, Height T) Rect[T] {
 
 	harfW := Width / 2.0
 	harfH := Height / 2.0
 
-	return Rect{
+	return Rect[T]{
 		Left:   CenterX - harfW,
 		Right:  CenterX + harfW,
 		Top:    CenterY - harfH,
