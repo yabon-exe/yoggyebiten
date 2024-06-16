@@ -22,7 +22,7 @@ type FireWork struct {
 	g           float64
 }
 
-func NewFireWork(start model.Vertex, fireListNum int, power float64, color color.RGBA, g float64) *FireWork {
+func NewFireWork(start model.Vertex[float64], fireListNum int, power float64, color color.RGBA, g float64) *FireWork {
 
 	list := []*Fire{}
 

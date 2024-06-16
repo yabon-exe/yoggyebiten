@@ -28,7 +28,7 @@ func DrawCircle(screen *ebiten.Image, circle model.Circle, color color.Color) {
 	screen.DrawImage(circleImage, op)
 }
 
-func DrawLineArray(screen *ebiten.Image, vertices []model.Vertex, color color.Color, width float32) {
+func DrawLineArray(screen *ebiten.Image, vertices []model.Vertex[float64], color color.Color, width float32) {
 
 	if len(vertices) < 2 {
 		return

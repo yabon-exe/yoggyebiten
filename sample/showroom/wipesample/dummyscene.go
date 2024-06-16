@@ -23,6 +23,7 @@ type DummyScene struct {
 	rand         *system.Random
 	imgIdx       int
 	keyboard     *system.Keyboard
+	startIdx     int
 }
 
 func (scene *DummyScene) Init() error {
@@ -38,7 +39,7 @@ func (scene *DummyScene) Init() error {
 	}
 	scene.backImgList = backList
 
-	scene.imgIdx = 0
+	scene.imgIdx = scene.startIdx
 	scene.rand = system.NewRandom()
 
 	scene.keyboard = system.GetKeyboard()
@@ -48,7 +49,11 @@ func (scene *DummyScene) Init() error {
 
 func (scene *DummyScene) Reset() error {
 
-	scene.imgIdx = scene.rand.GetRangeInt(backImgNum)
+	nextIdx := (scene.imgIdx + 2)
+	if nextIdx >= backImgNum {
+		nextIdx = nextIdx - backImgNum
+	}
+	scene.imgIdx = nextIdx
 	return nil
 }
 

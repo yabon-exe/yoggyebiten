@@ -4,7 +4,7 @@ import (
 	"github.com/yabon-exe/yoggyebiten/game"
 	"github.com/yabon-exe/yoggyebiten/game/scene"
 	"github.com/yabon-exe/yoggyebiten/game/scene/wipe"
-	"github.com/yabon-exe/yoggyebiten/game/scene/wipe/fadewipe"
+	"github.com/yabon-exe/yoggyebiten/game/scene/wipe/picturewipe"
 )
 
 type WipeSample struct {
@@ -22,15 +22,23 @@ func NewGame() *WipeSample {
 	return &WipeSample{
 		MulitSceneGame: game.MulitSceneGame{
 			SceneList: []scene.Scene{
-				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_2},
-				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_1},
+				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_2, startIdx: 0},
+				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_1, startIdx: 1},
 			},
 			WipeList: []wipe.Wipe{
-				&fadewipe.FadeInOutWipe{SpeedRate: 0.05},
+				// &fadewipe.FadeInOutWipe{SpeedRate: 0.05},
 				// &curtainwipe.CurtainWipe{SpeedRate: 0.05, Direct: curtainwipe.MOTION_LEFT},
 				// &curtainwipe.CurtainWipe{SpeedRate: 0.05, Direct: curtainwipe.MOTION_RIGHT},
 				// &curtainwipe.CurtainWipe{SpeedRate: 0.05, Direct: curtainwipe.MOTION_UP},
 				// &curtainwipe.CurtainWipe{SpeedRate: 0.05, Direct: curtainwipe.MOTION_DOWN},
+				// &cleanerwipe.CleanerWipe{SpeedRate: 0.01, Direct: cleanerwipe.MOTION_LEFT},
+				// &cleanerwipe.CleanerWipe{SpeedRate: 0.01, Direct: cleanerwipe.MOTION_RIGHT},
+				// &cleanerwipe.CleanerWipe{SpeedRate: 0.01, Direct: cleanerwipe.MOTION_UP},
+				// &cleanerwipe.CleanerWipe{SpeedRate: 0.01, Direct: cleanerwipe.MOTION_DOWN},
+				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_LEFT},
+				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_RIGHT},
+				// &picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_UP},
+				&picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_DOWN},
 			},
 		},
 	}

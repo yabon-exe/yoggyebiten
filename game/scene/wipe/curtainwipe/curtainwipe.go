@@ -7,10 +7,6 @@ import (
 	"github.com/yabon-exe/yoggyebiten/game/model"
 )
 
-const (
-	MAX_RGB = 255
-)
-
 type Direct int
 
 const (

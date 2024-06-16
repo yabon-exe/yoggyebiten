@@ -18,11 +18,11 @@ type Fire struct {
 	color       color.RGBA
 	declineTime int
 	ignition    bool
-	pos         model.Vertex
+	pos         model.Vertex[float64]
 	vel0        *model.Velocity2d
 	vel         *model.Velocity2d
 	g           float64
-	orbit       []model.Vertex
+	orbit       []model.Vertex[float64]
 }
 
 func NewFire(degree float64, speed float64, g float64, color color.RGBA) *Fire {
@@ -74,9 +74,9 @@ func (fire *Fire) Update() {
 	}
 }
 
-func (fire *Fire) Ignit(start model.Vertex) {
+func (fire *Fire) Ignit(start model.Vertex[float64]) {
 	fire.pos = start
-	fire.orbit = []model.Vertex{start}
+	fire.orbit = []model.Vertex[float64]{start}
 	fire.ignition = true
 }
 
@@ -106,5 +106,5 @@ func (fire *Fire) Reset() {
 	fire.ignition = false
 	fire.vel.SetX(fire.vel0.GetX())
 	fire.vel.SetY(fire.vel0.GetY())
-	fire.orbit = []model.Vertex{}
+	fire.orbit = []model.Vertex[float64]{}
 }

@@ -55,7 +55,7 @@ func (chainFire *ChainFireMobile) Init() error {
 	}
 	chainFire.backImg = graphic.ReadImageFile(imgBackFile)
 
-	chainFire.playerFw = NewFireWork(model.NewVertex(250, 150), 16, 1, color.RGBA{255, 255, 255, 0}, 0.06)
+	chainFire.playerFw = NewFireWork(model.NewVertex[float64](250, 150), 16, 1, color.RGBA{255, 255, 255, 0}, 0.06)
 
 	params := []FWParamMobile{}
 	colors := []color.RGBA{
@@ -94,14 +94,14 @@ func (chainFire *ChainFireMobile) Init() error {
 	chainFire.msg.Init()
 	chainFire.msg.SetColor(0, 255, 0, 255)
 	chainFire.msg.SetSize(40)
-	chainFire.msg.SetPosition(model.Vertex{X: 300, Y: 150})
+	chainFire.msg.SetPosition(model.Vertex[float64]{X: 300, Y: 150})
 	chainFire.explodeCount = 0
 
 	chainFire.msgR = &message.SimpleMessage{}
 	chainFire.msgR.Init()
 	chainFire.msgR.SetColor(255, 255, 255, 255)
 	chainFire.msgR.SetSize(20)
-	chainFire.msgR.SetPosition(model.Vertex{X: 300, Y: 220})
+	chainFire.msgR.SetPosition(model.Vertex[float64]{X: 300, Y: 220})
 	chainFire.msgR.SetText("[R]キーでリトライ")
 
 	return nil

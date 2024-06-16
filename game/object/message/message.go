@@ -18,7 +18,7 @@ type SimpleMessage struct {
 	op       *text.DrawOptions
 	text     string
 	size     float64
-	position *model.Vertex
+	position *model.Vertex[float64]
 	color    *color.RGBA
 }
 
@@ -30,7 +30,7 @@ func (message *SimpleMessage) Init() error {
 		return err
 	}
 	message.op = &text.DrawOptions{}
-	message.position = &model.Vertex{}
+	message.position = &model.Vertex[float64]{}
 	message.tf = &text.GoTextFace{
 		Source: message.tsf,
 		Size:   message.size,
@@ -52,7 +52,7 @@ func (message *SimpleMessage) Draw(screen *ebiten.Image) {
 	text.Draw(screen, message.text, message.tf, message.op)
 }
 
-func (message *SimpleMessage) SetPosition(pos model.Vertex) {
+func (message *SimpleMessage) SetPosition(pos model.Vertex[float64]) {
 	message.position.Set(pos.X, pos.Y)
 }
 

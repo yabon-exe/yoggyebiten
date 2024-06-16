@@ -1,15 +1,15 @@
 package model
 
-type Vertex struct {
-	X float64
-	Y float64
+type Vertex[T int | uint | float32 | float64] struct {
+	X T
+	Y T
 }
 
-func NewVertex(x float64, y float64) Vertex {
-	return Vertex{X: x, Y: y}
+func NewVertex[T int | uint | float32 | float64](x T, y T) Vertex[T] {
+	return Vertex[T]{X: x, Y: y}
 }
 
-func (v *Vertex) Set(x float64, y float64) {
+func (v *Vertex[T]) Set(x T, y T) {
 	v.X = x
 	v.Y = y
 }
@@ -17,6 +17,6 @@ func (v *Vertex) Set(x float64, y float64) {
 const PI_FULL_CIRCLE = 360.0
 
 type Circle struct {
-	Vertex Vertex
+	Vertex Vertex[float64]
 	Rad    int
 }
