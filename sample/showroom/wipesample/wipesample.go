@@ -26,7 +26,7 @@ func NewGame() *WipeSample {
 				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_1},
 			},
 			WipeList: []wipe.Wipe{
-				&fadewipe.FadeInOutWipe{Speed: 10},
+				&fadewipe.FadeInOutWipe{Speed: 5},
 			},
 		},
 	}

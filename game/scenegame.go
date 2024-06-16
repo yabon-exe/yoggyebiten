@@ -76,15 +76,15 @@ func (game *MulitSceneGame) Draw(screen *ebiten.Image) {
 	// ？？これがないと、画像読み込みで「image: unknown format」となる？？
 	ebitenutil.DebugPrint(screen, "")
 
-	if game.isWiping {
-		if game.screenCaptureImg == nil {
-			// ワイプ起動時はキャプチャ情報なし
-			// この時のゲーム画面を取得
-			game.screenCaptureImg = ebiten.NewImage(ebiten.WindowSize())
-			game.screenCaptureImg.DrawImage(screen, nil)
-		}
+	game.SceneList[game.nowSceneIdx].Draw(screen)
+
+	if !game.isWiping {
+		// ワイプ起動時はキャプチャ情報なし
+		// この時のゲーム画面を取得\
+		game.screenCaptureImg = ebiten.NewImage(ebiten.WindowSize())
+		// game.screenCaptureImg = ebiten.NewImage(111, 111)
+		game.screenCaptureImg.DrawImage(screen, nil)
+	} else {
 		game.WipeList[game.nowWipeIdx].Draw(screen, game.screenCaptureImg)
 	}
-
-	game.SceneList[game.nowSceneIdx].Draw(screen)
 }
