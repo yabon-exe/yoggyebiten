@@ -14,7 +14,7 @@ import (
 //go:embed assets/*
 var assets embed.FS
 
-const backImgNum = 10
+const backImgNum = 14
 
 type DummyScene struct {
 	scene.Scene
