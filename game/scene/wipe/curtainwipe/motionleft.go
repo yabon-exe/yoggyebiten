@@ -8,8 +8,8 @@ type MotionLeft struct {
 }
 
 func (motion *MotionLeft) reset(rect *model.Rect[int], width int, height int) {
-	rect.Left = 0
-	rect.Right = 0
+	rect.Left = width
+	rect.Right = width
 	rect.Top = 0
 	rect.Bottom = height
 }
@@ -17,9 +17,9 @@ func (motion *MotionLeft) reset(rect *model.Rect[int], width int, height int) {
 func (motion *MotionLeft) runClose(rect *model.Rect[int], speedRate float64, maxWidth int, maxHeight int) bool {
 
 	speed := float64(maxWidth) * speedRate
-	rect.Right += int(speed)
-	if rect.Right >= maxWidth {
-		rect.Right = maxWidth
+	rect.Left -= int(speed)
+	if rect.Left <= 0 {
+		rect.Left = 0
 		return true
 	}
 	return false
@@ -27,9 +27,9 @@ func (motion *MotionLeft) runClose(rect *model.Rect[int], speedRate float64, max
 func (motion *MotionLeft) runOpen(rect *model.Rect[int], speedRate float64, maxWidth int, maxHeight int) bool {
 
 	speed := float64(maxWidth) * speedRate
-	rect.Left += int(speed)
-	if rect.Left >= maxWidth {
-		rect.Left = maxWidth
+	rect.Right -= int(speed)
+	if rect.Right <= 0 {
+		rect.Right = 0
 		return true
 	}
 	return false
