@@ -65,9 +65,57 @@ func (scene *DummyScene) Update(isWiping bool) (int, int, error) {
 	if !isWiping {
 		scene.keyboard.Listen()
 		keys := scene.keyboard.GetPressedKeys()
-		if slices.Contains(keys, ebiten.KeySpace) {
+		if slices.Contains(keys, ebiten.KeyQ) {
 			nextScene = scene.nextSceneIdx
 			wipeIdx = WIPE_FADEINOUT_IDX
+		} else if slices.Contains(keys, ebiten.KeyW) {
+			nextScene = scene.nextSceneIdx
+			wipeIdx = WIPE_CURTAIN_U_IDX
+			if slices.Contains(keys, ebiten.KeyArrowUp) {
+				wipeIdx = WIPE_CURTAIN_U_IDX
+			} else if slices.Contains(keys, ebiten.KeyArrowDown) {
+				wipeIdx = WIPE_CURTAIN_D_IDX
+			} else if slices.Contains(keys, ebiten.KeyArrowLeft) {
+				wipeIdx = WIPE_CURTAIN_L_IDX
+			} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+				wipeIdx = WIPE_CURTAIN_R_IDX
+			}
+		} else if slices.Contains(keys, ebiten.KeyE) {
+			nextScene = scene.nextSceneIdx
+			wipeIdx = WIPE_CLEANER_U_IDX
+			if slices.Contains(keys, ebiten.KeyArrowUp) {
+				wipeIdx = WIPE_CLEANER_U_IDX
+			} else if slices.Contains(keys, ebiten.KeyArrowDown) {
+				wipeIdx = WIPE_CLEANER_D_IDX
+			} else if slices.Contains(keys, ebiten.KeyArrowLeft) {
+				wipeIdx = WIPE_CLEANER_L_IDX
+			} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+				wipeIdx = WIPE_CLEANER_R_IDX
+			}
+		} else if slices.Contains(keys, ebiten.KeyR) {
+			nextScene = scene.nextSceneIdx
+			wipeIdx = WIPE_PICTURE_UL_IDX
+			if slices.Contains(keys, ebiten.KeyArrowUp) {
+				if slices.Contains(keys, ebiten.KeyArrowLeft) {
+					wipeIdx = WIPE_PICTURE_UL_IDX
+				} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+					wipeIdx = WIPE_PICTURE_UR_IDX
+				} else {
+					wipeIdx = WIPE_PICTURE_U_IDX
+				}
+			} else if slices.Contains(keys, ebiten.KeyArrowDown) {
+				if slices.Contains(keys, ebiten.KeyArrowLeft) {
+					wipeIdx = WIPE_PICTURE_DL_IDX
+				} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+					wipeIdx = WIPE_PICTURE_DR_IDX
+				} else {
+					wipeIdx = WIPE_PICTURE_D_IDX
+				}
+			} else if slices.Contains(keys, ebiten.KeyArrowLeft) {
+				wipeIdx = WIPE_PICTURE_L_IDX
+			} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+				wipeIdx = WIPE_PICTURE_R_IDX
+			}
 		}
 	}
 
