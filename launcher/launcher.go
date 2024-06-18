@@ -24,22 +24,7 @@ func (ebitenGame *EbitenGame) Layout(outsideWidth int, outsideHeight int) (int, 
 
 	// logger := system.GetLogger(system.INFO)
 	option := ebitenGame.yoggyGame.GetGameOption()
-	return option.LayoutWidth, option.LayoutHeight
-	// switch option.DeviceType {
-	// case game.PC:
-	// 	return option.WindowWidth, option.WindowHeight
-	// case game.MOBILE_PHONE_PORTRAIT:
-	// 	return game.MOBILE_WIDTH, game.MOBILE_HEIGHT
-	// case game.MOBILE_PHONE_LANDSCAPE:
-	// 	return game.MOBILE_HEIGHT, game.MOBILE_WIDTH
-	// case game.MOBILE_TABLET_PORTRAIT:
-	// 	return game.MOBILE_WIDTH, game.MOBILE_HEIGHT
-	// case game.MOBILE_TABLET_LANDSCAPE:
-	// 	return game.MOBILE_HEIGHT, game.MOBILE_WIDTH
-	// default:
-	// 	logger.Fatal("unexpected DeviceType.")
-	// }
-	// return option.WindowWidth, option.WindowHeight
+	return option.LayoutSize.ToWH()
 }
 
 func RunGame(yoggyGame game.Game) {
@@ -64,7 +49,7 @@ func RunGame(yoggyGame game.Game) {
 	default:
 		logger.Fatal("unexpected DeviceType.")
 	}
-	ebiten.SetWindowSize(option.WindowWidth, option.WindowHeight)
+	ebiten.SetWindowSize(option.WindowSize.ToWH())
 
 	game := &EbitenGame{
 		yoggyGame: yoggyGame,

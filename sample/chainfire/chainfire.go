@@ -188,12 +188,10 @@ func (chainFire *ChainFire) Draw(screen *ebiten.Image) {
 
 func (chainFire *ChainFire) GetGameOption() game.GameOption {
 	option := game.GameOption{
-		DeviceType:   game.PC,
-		WindowTitle:  "*** Yoggy ChainFire ***",
-		WindowWidth:  GameWidth,
-		WindowHeight: GameHeight,
-		LayoutWidth:  GameWidth,
-		LayoutHeight: GameHeight,
+		DeviceType:  game.PC,
+		WindowTitle: "*** Yoggy ChainFire ***",
+		WindowSize:  model.Size[int]{W: GameWidth, H: GameHeight},
+		LayoutSize:  model.Size[int]{W: GameWidth, H: GameHeight},
 	}
 	return option
 }

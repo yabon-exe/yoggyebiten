@@ -187,12 +187,10 @@ func (chainFire *ChainFireMobile) Draw(screen *ebiten.Image) {
 
 func (chainFire *ChainFireMobile) GetGameOption() game.GameOption {
 	option := game.GameOption{
-		DeviceType:   game.MOBILE_PHONE_PORTRAIT,
-		WindowTitle:  "*** Yoggy ChainFire Mobile ***",
-		WindowWidth:  GameWidthMobile / 2,
-		WindowHeight: GameHeightMobile / 2,
-		LayoutWidth:  GameWidthMobile,
-		LayoutHeight: GameHeightMobile,
+		DeviceType:  game.MOBILE_PHONE_PORTRAIT,
+		WindowTitle: "*** Yoggy ChainFire Mobile ***",
+		WindowSize:  model.Size[int]{W: GameWidthMobile / 2, H: GameHeightMobile / 2},
+		LayoutSize:  model.Size[int]{W: GameWidthMobile, H: GameHeightMobile},
 	}
 	return option
 }

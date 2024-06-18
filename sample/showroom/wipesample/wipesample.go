@@ -60,20 +60,17 @@ func NewGame() *WipeSample {
 	}
 
 	option := game.GameOption{
-		DeviceType:   game.PC,
-		WindowTitle:  "*** Wipe Sample ***",
-		WindowWidth:  880.0,
-		WindowHeight: 495.0,
-		LayoutWidth:  880.0,
-		LayoutHeight: 495.0,
+		DeviceType:  game.PC,
+		WindowTitle: "*** Wipe Sample ***",
+		WindowSize:  game.GetDefaulDeviceSize(game.PC),
+		LayoutSize:  game.GetDefaulDeviceSize(game.PC),
 	}
+
 	// option := game.GameOption{
-	// 	DeviceType:   game.MOBILE_PHONE_PORTRAIT,
-	// 	WindowTitle:  "*** Wipe Sample ***",
-	// 	WindowWidth:  game.MOBILE_WIDTH / 2,
-	// 	WindowHeight: game.MOBILE_HEIGHT / 2,
-	// 	LayoutWidth:  game.MOBILE_WIDTH,
-	// 	LayoutHeight: game.MOBILE_HEIGHT,
+	// 	DeviceType:  game.MOBILE_PHONE_PORTRAIT,
+	// 	WindowTitle: "*** Wipe Sample ***",
+	// 	WindowSize:  model.Size[int]{W: game.MOBILE_WIDTH / 2, H: game.MOBILE_HEIGHT / 2},
+	// 	LayoutSize:  game.GetDefaulDeviceSize(game.MOBILE_PHONE_PORTRAIT),
 	// }
 
 	return &WipeSample{
@@ -87,21 +84,3 @@ func NewGame() *WipeSample {
 		},
 	}
 }
-
-// func (g *WipeSample) GetGameOption() game.GameOption {
-// option := game.GameOption{
-// 	DeviceType:   game.PC,
-// 	WindowTitle:  "*** Wipe Sample ***",
-// 	WindowWidth:  880.0,
-// 	WindowHeight: 495.0,
-// }
-// 	option := game.GameOption{
-// 		DeviceType:   game.MOBILE_PHONE_PORTRAIT,
-// 		WindowTitle:  "*** Wipe Sample ***",
-// 		WindowWidth:  game.MOBILE_WIDTH / 2,
-// 		WindowHeight: game.MOBILE_HEIGHT / 2,
-// 		LayoutWidth:  game.MOBILE_WIDTH,
-// 		LayoutHeight: game.MOBILE_HEIGHT,
-// 	}
-// 	return option
-// }
