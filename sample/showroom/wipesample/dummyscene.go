@@ -3,7 +3,6 @@ package wipesample
 import (
 	"embed"
 	"fmt"
-	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/yabon-exe/yoggyebiten/game/scene"
@@ -64,56 +63,61 @@ func (scene *DummyScene) Update(isWiping bool) (int, int, error) {
 
 	if !isWiping {
 		scene.keyboard.Listen()
-		keys := scene.keyboard.GetPressedKeys()
-		if slices.Contains(keys, ebiten.KeyQ) {
+
+		onUp := scene.keyboard.Contains(ebiten.KeyArrowUp)
+		onDown := scene.keyboard.Contains(ebiten.KeyArrowDown)
+		onLeft := scene.keyboard.Contains(ebiten.KeyArrowLeft)
+		onRight := scene.keyboard.Contains(ebiten.KeyArrowRight)
+
+		if scene.keyboard.Contains(ebiten.KeyQ) {
 			nextScene = scene.nextSceneIdx
 			wipeIdx = WIPE_FADEINOUT_IDX
-		} else if slices.Contains(keys, ebiten.KeyW) {
+		} else if scene.keyboard.Contains(ebiten.KeyW) {
 			nextScene = scene.nextSceneIdx
 			wipeIdx = WIPE_CURTAIN_U_IDX
-			if slices.Contains(keys, ebiten.KeyArrowUp) {
+			if onUp {
 				wipeIdx = WIPE_CURTAIN_U_IDX
-			} else if slices.Contains(keys, ebiten.KeyArrowDown) {
+			} else if onDown {
 				wipeIdx = WIPE_CURTAIN_D_IDX
-			} else if slices.Contains(keys, ebiten.KeyArrowLeft) {
+			} else if onLeft {
 				wipeIdx = WIPE_CURTAIN_L_IDX
-			} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+			} else if onRight {
 				wipeIdx = WIPE_CURTAIN_R_IDX
 			}
-		} else if slices.Contains(keys, ebiten.KeyE) {
+		} else if scene.keyboard.Contains(ebiten.KeyE) {
 			nextScene = scene.nextSceneIdx
 			wipeIdx = WIPE_CLEANER_U_IDX
-			if slices.Contains(keys, ebiten.KeyArrowUp) {
+			if onUp {
 				wipeIdx = WIPE_CLEANER_U_IDX
-			} else if slices.Contains(keys, ebiten.KeyArrowDown) {
+			} else if onDown {
 				wipeIdx = WIPE_CLEANER_D_IDX
-			} else if slices.Contains(keys, ebiten.KeyArrowLeft) {
+			} else if onLeft {
 				wipeIdx = WIPE_CLEANER_L_IDX
-			} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+			} else if onRight {
 				wipeIdx = WIPE_CLEANER_R_IDX
 			}
-		} else if slices.Contains(keys, ebiten.KeyR) {
+		} else if scene.keyboard.Contains(ebiten.KeyR) {
 			nextScene = scene.nextSceneIdx
 			wipeIdx = WIPE_PICTURE_UL_IDX
-			if slices.Contains(keys, ebiten.KeyArrowUp) {
-				if slices.Contains(keys, ebiten.KeyArrowLeft) {
+			if onUp {
+				if onLeft {
 					wipeIdx = WIPE_PICTURE_UL_IDX
-				} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+				} else if onRight {
 					wipeIdx = WIPE_PICTURE_UR_IDX
 				} else {
 					wipeIdx = WIPE_PICTURE_U_IDX
 				}
-			} else if slices.Contains(keys, ebiten.KeyArrowDown) {
-				if slices.Contains(keys, ebiten.KeyArrowLeft) {
+			} else if onDown {
+				if onLeft {
 					wipeIdx = WIPE_PICTURE_DL_IDX
-				} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+				} else if onRight {
 					wipeIdx = WIPE_PICTURE_DR_IDX
 				} else {
 					wipeIdx = WIPE_PICTURE_D_IDX
 				}
-			} else if slices.Contains(keys, ebiten.KeyArrowLeft) {
+			} else if onLeft {
 				wipeIdx = WIPE_PICTURE_L_IDX
-			} else if slices.Contains(keys, ebiten.KeyArrowRight) {
+			} else if onRight {
 				wipeIdx = WIPE_PICTURE_R_IDX
 			}
 		}

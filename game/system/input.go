@@ -1,6 +1,7 @@
 package system
 
 import (
+	"slices"
 	"sync"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -27,4 +28,8 @@ func (k *Keyboard) Listen() {
 
 func (k *Keyboard) GetPressedKeys() []ebiten.Key {
 	return k.keys
+}
+
+func (k *Keyboard) Contains(key ebiten.Key) bool {
+	return slices.Contains(k.keys, key)
 }
