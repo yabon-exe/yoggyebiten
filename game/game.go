@@ -1,6 +1,8 @@
 package game
 
 import (
+	"runtime"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/yabon-exe/yoggyebiten/game/system"
 )
@@ -36,4 +38,8 @@ type Game interface {
 	Update() error
 	Draw(screen *ebiten.Image)
 	GetGameOption() (option GameOption)
+}
+
+func IsMobile() bool {
+	return ebiten.Monitor().DeviceScaleFactor() > 1.0 || runtime.GOOS == "android" || runtime.GOOS == "ios"
 }

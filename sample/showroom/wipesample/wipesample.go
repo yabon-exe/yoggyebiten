@@ -59,20 +59,22 @@ func NewGame() *WipeSample {
 		&picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_DOWN_RIGHT},
 	}
 
-	// option := game.GameOption{
-	// 	DeviceType:   game.PC,
-	// 	WindowTitle:  "*** Wipe Sample ***",
-	// 	WindowWidth:  880.0,
-	// 	WindowHeight: 495.0,
-	// }
 	option := game.GameOption{
-		DeviceType:   game.MOBILE_PHONE_PORTRAIT,
+		DeviceType:   game.PC,
 		WindowTitle:  "*** Wipe Sample ***",
-		WindowWidth:  game.MOBILE_WIDTH / 2,
-		WindowHeight: game.MOBILE_HEIGHT / 2,
-		LayoutWidth:  game.MOBILE_WIDTH,
-		LayoutHeight: game.MOBILE_HEIGHT,
+		WindowWidth:  880.0,
+		WindowHeight: 495.0,
+		LayoutWidth:  880.0,
+		LayoutHeight: 495.0,
 	}
+	// option := game.GameOption{
+	// 	DeviceType:   game.MOBILE_PHONE_PORTRAIT,
+	// 	WindowTitle:  "*** Wipe Sample ***",
+	// 	WindowWidth:  game.MOBILE_WIDTH / 2,
+	// 	WindowHeight: game.MOBILE_HEIGHT / 2,
+	// 	LayoutWidth:  game.MOBILE_WIDTH,
+	// 	LayoutHeight: game.MOBILE_HEIGHT,
+	// }
 
 	return &WipeSample{
 		MulitSceneGame: game.MulitSceneGame{
