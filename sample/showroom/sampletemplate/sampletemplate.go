@@ -1,4 +1,4 @@
-package uisample
+package sampletemplate
 
 import (
 	"github.com/yabon-exe/yoggyebiten/game"
@@ -14,7 +14,7 @@ func NewGame() game.Game {
 
 	option := game.GameOption{
 		DeviceType:  game.PC,
-		WindowTitle: "*** UI Sample ***",
+		WindowTitle: "*** Sample ***",
 		WindowSize:  game.GetDefaulDeviceSize(game.PC),
 		LayoutSize:  game.GetDefaulDeviceSize(game.PC),
 	}
