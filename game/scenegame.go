@@ -8,6 +8,7 @@ import (
 )
 
 type MulitSceneGame struct {
+	Option           GameOption
 	SceneList        []scene.Scene
 	WipeList         []wipe.Wipe
 	nowSceneIdx      int
@@ -51,7 +52,9 @@ func (game *MulitSceneGame) Update() error {
 		// ワイプ開始
 		game.isWiping = true
 		game.nowWipeIdx = wipeIdx
-		w, h := ebiten.WindowSize()
+		// w, h := ebiten.WindowSize()
+		w := game.Option.LayoutWidth
+		h := game.Option.LayoutHeight
 		game.WipeList[game.nowWipeIdx].Reset(w, h)
 	}
 
@@ -81,9 +84,16 @@ func (game *MulitSceneGame) Draw(screen *ebiten.Image) {
 	if !game.isWiping {
 		// ワイプ起動時はキャプチャ情報なし
 		// この時のゲーム画面を取得
-		game.screenCaptureImg = ebiten.NewImage(ebiten.WindowSize())
+		// w, h := ebiten.WindowSize()
+		w := game.Option.LayoutWidth
+		h := game.Option.LayoutHeight
+		game.screenCaptureImg = ebiten.NewImage(w, h)
 		game.screenCaptureImg.DrawImage(screen, nil)
 	} else {
 		game.WipeList[game.nowWipeIdx].Draw(screen, game.screenCaptureImg)
 	}
+}
+
+func (g *MulitSceneGame) GetGameOption() GameOption {
+	return g.Option
 }

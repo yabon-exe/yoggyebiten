@@ -26,6 +26,8 @@ type GameOption struct {
 	WindowTitle  string
 	WindowWidth  int
 	WindowHeight int
+	LayoutWidth  int
+	LayoutHeight int
 	LogLevel     system.LogLevel
 }
 

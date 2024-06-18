@@ -59,8 +59,24 @@ func NewGame() *WipeSample {
 		&picturewipe.PictureWipe{SpeedRate: 0.01, Direct: picturewipe.MOTION_DOWN_RIGHT},
 	}
 
+	// option := game.GameOption{
+	// 	DeviceType:   game.PC,
+	// 	WindowTitle:  "*** Wipe Sample ***",
+	// 	WindowWidth:  880.0,
+	// 	WindowHeight: 495.0,
+	// }
+	option := game.GameOption{
+		DeviceType:   game.MOBILE_PHONE_PORTRAIT,
+		WindowTitle:  "*** Wipe Sample ***",
+		WindowWidth:  game.MOBILE_WIDTH / 2,
+		WindowHeight: game.MOBILE_HEIGHT / 2,
+		LayoutWidth:  game.MOBILE_WIDTH,
+		LayoutHeight: game.MOBILE_HEIGHT,
+	}
+
 	return &WipeSample{
 		MulitSceneGame: game.MulitSceneGame{
+			Option: option,
 			SceneList: []scene.Scene{
 				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_2, startIdx: 0},
 				&DummyScene{nextSceneIdx: DUMMY_SCENE_ID_1, startIdx: 1},
@@ -70,12 +86,20 @@ func NewGame() *WipeSample {
 	}
 }
 
-func (g *WipeSample) GetGameOption() game.GameOption {
-	option := game.GameOption{
-		DeviceType:   game.PC,
-		WindowTitle:  "*** Wipe Sample ***",
-		WindowWidth:  880.0,
-		WindowHeight: 495.0,
-	}
-	return option
-}
+// func (g *WipeSample) GetGameOption() game.GameOption {
+// option := game.GameOption{
+// 	DeviceType:   game.PC,
+// 	WindowTitle:  "*** Wipe Sample ***",
+// 	WindowWidth:  880.0,
+// 	WindowHeight: 495.0,
+// }
+// 	option := game.GameOption{
+// 		DeviceType:   game.MOBILE_PHONE_PORTRAIT,
+// 		WindowTitle:  "*** Wipe Sample ***",
+// 		WindowWidth:  game.MOBILE_WIDTH / 2,
+// 		WindowHeight: game.MOBILE_HEIGHT / 2,
+// 		LayoutWidth:  game.MOBILE_WIDTH,
+// 		LayoutHeight: game.MOBILE_HEIGHT,
+// 	}
+// 	return option
+// }

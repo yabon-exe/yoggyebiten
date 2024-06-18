@@ -191,6 +191,8 @@ func (chainFire *ChainFireMobile) GetGameOption() game.GameOption {
 		WindowTitle:  "*** Yoggy ChainFire Mobile ***",
 		WindowWidth:  GameWidthMobile / 2,
 		WindowHeight: GameHeightMobile / 2,
+		LayoutWidth:  GameWidthMobile,
+		LayoutHeight: GameHeightMobile,
 	}
 	return option
 }
