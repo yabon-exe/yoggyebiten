@@ -7,6 +7,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/yabon-exe/yoggyebiten/game/scene"
 	"github.com/yabon-exe/yoggyebiten/game/system"
+	"github.com/yabon-exe/yoggyebiten/game/system/input"
 	"github.com/yabon-exe/yoggyebiten/game/util/graphic"
 )
 
@@ -21,7 +22,7 @@ type DummyScene struct {
 	backImgList  []*ebiten.Image
 	rand         *system.Random
 	imgIdx       int
-	keyboard     *system.Keyboard
+	keyboard     *input.Keyboard
 	startIdx     int
 }
 
@@ -41,7 +42,7 @@ func (scene *DummyScene) Init() error {
 	scene.imgIdx = scene.startIdx
 	scene.rand = system.NewRandom()
 
-	scene.keyboard = system.GetKeyboard()
+	scene.keyboard = input.GetKeyboard()
 
 	return nil
 }

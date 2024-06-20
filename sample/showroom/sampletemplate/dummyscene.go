@@ -3,17 +3,17 @@ package sampletemplate
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/yabon-exe/yoggyebiten/game/scene"
-	"github.com/yabon-exe/yoggyebiten/game/system"
+	"github.com/yabon-exe/yoggyebiten/game/system/input"
 )
 
 type DummyScene struct {
 	scene.Scene
-	keyboard *system.Keyboard
+	keyboard *input.Keyboard
 }
 
 func (scene *DummyScene) Init() error {
 
-	scene.keyboard = system.GetKeyboard()
+	scene.keyboard = input.GetKeyboard()
 	return nil
 }
 

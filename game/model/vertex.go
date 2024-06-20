@@ -14,6 +14,10 @@ func (v *Vertex[T]) Set(x T, y T) {
 	v.Y = y
 }
 
+func (v *Vertex[T]) Get() (T, T) {
+	return v.X, v.Y
+}
+
 const PI_FULL_CIRCLE = 360.0
 
 type Circle struct {
