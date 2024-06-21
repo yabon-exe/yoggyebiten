@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/mobile"
 	"github.com/yabon-exe/yoggyebiten/game"
 	"github.com/yabon-exe/yoggyebiten/game/system"
 )
@@ -34,17 +35,21 @@ func RunGame(yoggyGame game.Game) {
 
 	ebiten.SetWindowTitle(option.WindowTitle)
 
-	// スマホ、タブレットは大きさ固定
+	mobileMode := false
 	switch option.DeviceType {
 	case game.PC:
 		logger.Info("device type: PC")
 	case game.MOBILE_PHONE_PORTRAIT:
+		mobileMode = true
 		logger.Info("device type: MOBILE_PHONE_PORTRAIT")
 	case game.MOBILE_PHONE_LANDSCAPE:
+		mobileMode = true
 		logger.Info("device type: MOBILE_PHONE_LANDSCAPE")
 	case game.MOBILE_TABLET_PORTRAIT:
+		mobileMode = true
 		logger.Info("device type: MOBILE_TABLET_PORTRAIT")
 	case game.MOBILE_TABLET_LANDSCAPE:
+		mobileMode = true
 		logger.Info("device type: MOBILE_TABLET_LANDSCAPE")
 	default:
 		logger.Fatal("unexpected DeviceType.")
@@ -56,6 +61,11 @@ func RunGame(yoggyGame game.Game) {
 	}
 
 	yoggyGame.Init()
+
+	if mobileMode {
+		mobile.SetGame(game)
+	}
+
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
