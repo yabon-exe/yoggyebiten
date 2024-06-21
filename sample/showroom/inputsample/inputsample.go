@@ -1,4 +1,4 @@
-package uisample
+package inputsample
 
 import (
 	"github.com/yabon-exe/yoggyebiten/game"
@@ -6,7 +6,7 @@ import (
 	"github.com/yabon-exe/yoggyebiten/game/scene/wipe"
 )
 
-type UiSample struct {
+type InputSample struct {
 	game.MulitSceneGame
 }
 
@@ -19,7 +19,7 @@ func NewGame() game.Game {
 		LayoutSize:  game.GetDefaulDeviceSize(game.PC),
 	}
 
-	return &UiSample{
+	return &InputSample{
 		MulitSceneGame: game.MulitSceneGame{
 			Option: option,
 			SceneList: []scene.Scene{
@@ -30,10 +30,10 @@ func NewGame() game.Game {
 	}
 }
 
-func (game *UiSample) CrateSceneList() []*scene.Scene {
+func (game *InputSample) CrateSceneList() []*scene.Scene {
 	return nil
 }
 
-func (game *UiSample) CrateWipeList() []*wipe.Wipe {
+func (game *InputSample) CrateWipeList() []*wipe.Wipe {
 	return nil
 }

@@ -8,12 +8,16 @@ import (
 )
 
 type Mouse struct {
-	mousePoint model.Vertex[int]
-	leftClick  bool
-	rightClick bool
-	dragging   bool
-	dragStart  model.Vertex[int]
-	dragEnd    model.Vertex[int]
+	mousePoint    model.Vertex[int]
+	onLeft        bool
+	onRight       bool
+	pressedLeft   bool
+	pressedRight  bool
+	releasedLeft  bool
+	releasedRight bool
+	dragging      bool
+	dragStart     model.Vertex[int]
+	dragEnd       model.Vertex[int]
 }
 
 var mouse *Mouse
@@ -27,27 +31,41 @@ func GetMouse() *Mouse {
 }
 
 func (m *Mouse) Listen() {
+
 	m.mousePoint.Set(ebiten.CursorPosition())
 
+	m.pressedLeft = false
+	m.pressedRight = false
+	m.releasedLeft = false
+	m.releasedRight = false
+
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-		if !m.leftClick {
-			m.leftClick = true
+		if !m.onLeft {
+			m.onLeft = true
+			m.pressedLeft = true
 			m.dragStart.Set(m.mousePoint.Get())
 		}
 	} else {
-		if m.leftClick {
-			m.leftClick = false
+		if m.onLeft {
+			m.onLeft = false
+			m.releasedLeft = true
 			m.dragging = false
 		}
 	}
 
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonRight) {
-		m.rightClick = true
+		if !m.onRight {
+			m.pressedRight = true
+		}
+		m.onRight = true
 	} else {
-		m.rightClick = false
+		if m.onRight {
+			m.releasedRight = true
+		}
+		m.onRight = false
 	}
 
-	if m.leftClick {
+	if m.onLeft {
 		m.dragging = true
 		m.dragEnd.Set(m.mousePoint.Get())
 	}
@@ -57,8 +75,16 @@ func (m *Mouse) GetMousePoint() model.Vertex[int] {
 	return m.mousePoint
 }
 
-func (m *Mouse) GetClickInfo() (bool, bool) {
-	return m.leftClick, m.rightClick
+func (m *Mouse) GetOnButtonInfo() (bool, bool) {
+	return m.onLeft, m.onRight
+}
+
+func (m *Mouse) GetPressedInfo() (bool, bool) {
+	return m.pressedLeft, m.pressedRight
+}
+
+func (m *Mouse) GetReleasedInfo() (bool, bool) {
+	return m.releasedLeft, m.releasedRight
 }
 
 func (m *Mouse) GetDragInfo() (bool, model.Vertex[int], model.Vertex[int]) {
